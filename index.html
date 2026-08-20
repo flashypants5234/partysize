@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financial Institution Portal</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Obfuscated text storage
+    const obfuscatedText = {
+      institutionName: 'Secure Asset Portal',
+      assetTypes: ['Savings Accounts', 'Personal Items', 'Vehicles', 'Digital Assets'],
+      lookupTitle: 'Find Your Record',
+      lookupDescription: 'Enter your identification number below',
+      accessTitle: 'Recovery Information',
+      accessDescription: 'Your secure access details are below',
+      verificationTitle: 'Security Verification',
+      verificationDescription: 'Select the words that match your access code',
+      finalTitle: 'Download Instructions',
+      finalDescription: 'Follow these steps to access your assets',
+      adminTitle: 'Administrator Panel',
+      staffTitle: 'Staff Panel',
+      loginLabel: 'Username',
+      passwordLabel: 'Password',
+      loginButton: 'Sign In',
+      createCase: 'Create New Case',
+      manageSeeds: 'Manage Recovery Sets',
+      caseStatus: 'Active',
+      caseDate: 'June 15, 2023',
+      caseType: 'Savings Account',
+      recoveryWords: ['apple', 'bridge', 'candle', 'dolphin', 'engine', 'forest', 'guitar', 'harbor', 'island', 'jungle', 'kettle', 'lamp', 'mountain', 'nature', 'ocean', 'piano', 'queen', 'river', 'sunset', 'tiger', 'umbrella', 'violet', 'waterfall', 'x-ray', 'yacht', 'zebra'],
+      verificationWords: ['apple', 'bridge', 'candle', 'dolphin', 'engine'],
+      downloadLink: 'Download Instructions.pdf',
+      importLink: 'Import Instructions.pdf'
+    };
+
+    // Function to decode and display obfuscated text
+    function displayObfuscatedText(element, key) {
+      element.textContent = atob(obfuscatedText[key]);
+    }
+
+    // Function to toggle access code visibility
+    function toggleAccessCode() {
+      const content = document.getElementById('access-content');
+      const button = document.getElementById('toggle-btn');
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        button.textContent = 'Hide';
+      } else {
+        content.classList.add('hidden');
+        button.textContent = 'Show';
+      }
+    }
+
+    // Function to show a specific page
+    function showPage(pageId) {
+      document.querySelectorAll('.page-view').forEach(page => page.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    // Function to simulate case lookup
+    function lookupCase() {
+      const caseId = document.getElementById('case-id').value;
+      // In a real application, this would fetch data from a backend
+      const mockData = {
+        status: 'Active',
+        date: 'June 15, 2023',
+        type: 'Savings Account'
+      };
+      document.getElementById('case-status').textContent = mockData.status;
+      document.getElementById('case-date').textContent = mockData.date;
+      document.getElementById('case-type').textContent = mockData.type;
+      document.getElementById('case-details').classList.remove('hidden');
+    }
+
+    // Function to simulate security verification
+    function verifyAccess() {
+      // In a real application, this would verify the selected words against the access code
+      alert('Verification successful!');
+      showPage('final-page');
+    }
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Display obfuscated text
+      displayObfuscatedText(document.querySelector('.institution-title'), 'institutionName');
+      document.querySelectorAll('.card-title').forEach((el, index) => displayObfuscatedText(el, `assetTypes[${index}]`));
+      displayObfuscatedText(document.querySelector('.section-heading'), 'lookupTitle');
+      displayObfuscatedText(document.querySelector('.description-text'), 'lookupDescription');
+      displayObfuscatedText(document.querySelector('.section-heading'), 'accessTitle');
+      displayObfuscatedText(document.querySelector('.description-text'), 'accessDescription');
+      displayObfuscatedText(document.querySelector('.section-heading'), 'verificationTitle');
+      displayObfuscatedText(document.querySelector('.description-text'), 'verificationDescription');
+      displayObfuscatedText(document.querySelector('.section-heading'), 'finalTitle');
+      displayObfuscatedText(document.querySelector('.description-text'), 'finalDescription');
+      displayObfuscatedText(document.querySelector('.section-heading'), 'adminTitle');
+      displayObfuscatedText(document.querySelector('.section-heading'), 'staffTitle');
+      document.querySelectorAll('.input-label').forEach((el, index) => displayObfuscatedText(el, `loginLabel`));
+      document.querySelectorAll('.input-label').forEach((el, index) => displayObfuscatedText(el, `passwordLabel`));
+      document.querySelectorAll('.action-button').forEach((el, index) => displayObfuscatedText(el, `loginButton`));
+      document.querySelectorAll('.action-button').forEach((el, index) => displayObfuscatedText(el, `createCase`));
+      document.querySelectorAll('.action-button').forEach((el, index) => displayObfuscatedText(el, `manageSeeds`));
+      document.getElementById('case-status').textContent = atob(obfuscatedText.caseStatus);
+      document.getElementById('case-date').textContent = atob(obfuscatedText.caseDate);
+      document.getElementById('case-type').textContent = atob(obfuscatedText.caseType);
+      document.querySelectorAll('.word-item').forEach((el, index) => displayObfuscatedText(el, `recoveryWords[${index}]`));
+      document.querySelectorAll('.word-item').forEach((el, index) => displayObfuscatedText(el, `verificationWords[${index}]`));
+      document.getElementById('download-link').href = atob(obfuscatedText.downloadLink);
+      document.getElementById('import-link').href = atob(obfuscatedText.importLink);
+
+      // Set up event listeners
+      document.getElementById('toggle-btn').addEventListener('click', toggleAccessCode);
+      document.getElementById('lookup-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        lookupCase();
+      });
+      document.getElementById('verify-btn').addEventListener('click', verifyAccess);
+    });
+  </script>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Landing Page -->
+    <div id="landing-page" class="page-view active">
+      <header class="top-header">
+        <div class="header-logo">
+          <h1 class="institution-title"></h1>
+        </div>
+      </header>
+      
+      <main class="content-area">
+        <section class="welcome-section">
+          <h2 class="section-heading">Select Asset Type</h2>
+          <p class="description-text">Choose the category that matches your inquiry</p>
+        </section>
+        
+        <div class="asset-grid">
+          <div class="asset-card" data-type="savings">
+            <div class="card-icon savings-icon"></div>
+            <h3 class="card-title"></h3>
+            <p class="card-description">Traditional banking products</p>
+          </div>
+          
+          <div class="asset-card" data-type="jewelry">
+            <div class="card-icon jewelry-icon"></div>
+            <h3 class="card-title"></h3>
+            <p class="card-description">Valuables and collectibles</p>
+          </div>
+          
+          <div class="asset-card" data-type="vehicles">
+            <div class="card-icon vehicles-icon"></div>
+            <h3 class="card-title"></h3>
+            <p class="card-description">Automobiles and watercraft</p>
+          </div>
+          
+          <div class="asset-card" data-type="digital">
+            <div class="card-icon digital-icon"></div>
+            <h3 class="card-title"></h3>
+            <p class="card-description">Electronic holdings</p>
+          </div>
+        </div>
+      </main>
+    </div>
+    
+    <!-- Case Lookup Page -->
+    <div id="lookup-page" class="page-view">
+      <header class="top-header">
+        <button class="back-button" onclick="showPage('landing-page')">&larr;</button>
+        <div class="header-logo">
+          <h1 class="institution-title"></h1>
+        </div>
+      </header>
+      
+      <main class="content-area">
+        <section class="lookup-section">
+          <h2 class="section-heading"></h2>
+          <p class="description-text"></p>
+          
+          <form id="lookup-form" class="lookup-form">
+            <div class="input-group">
+              <label for="case-id" class="input-label"></label>
+              <input type="text" id="case-id" class="text-input" placeholder="Enter ID" required>
+            </div>
+            
+            <button type="submit" class="action-button primary-btn">Retrieve Details</button>
+          </form>
+          
+          <div id="case-details" class="case-details hidden">
+            <h3 class="details-heading">Record Information</h3>
+            <div class="detail-item">
+              <span class="detail-label">Status:</span>
+              <span class="detail-value" id="case-status"></span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Filed:</span>
+              <span class="detail-value" id="case-date"></span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Type:</span>
+              <span class="detail-value" id="case-type"></span>
+            </div>
+            
+            <button id="access-btn" class="action-button secondary-btn" onclick="showPage('access-page')">View Access Information</button>
+          </div>
+        </section>
+      </main>
+    </div>
+    
+    <!-- Access Code Page -->
+    <div id="access-page" class="page-view">
+      <header class="top-header">
+        <button class="back-button" onclick="showPage('lookup-page')">&larr;</button>
+        <div class="header-logo">
+          <h1 class="institution-title"></h1>
+        </div>
+      </header>
+      
+      <main class="content-area">
+        <section class="access-section">
+          <h2 class="section-heading"></h2>
+          <p class="description-text"></p>
+          
+          <div class="access-container">
+            <div class="access-box">
+              <div class="access-header">
+                <span class="access-label">Recovery Set</span>
+                <button id="toggle-btn" class="toggle-button">Show</button>
+              </div>
+              <div id="access-content" class="access-content hidden">
+                <div class="recovery-words">
+                  <!-- Recovery words will be injected here -->
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button id="verify-btn" class="action-button primary-btn" onclick="verifyAccess()">Verify Access</button>
+        </section>
+      </main>
+    </div>
+    
+    <!-- Security Verification Page -->
+    <div id="verification-page" class="page-view">
+      <header class="top-header">
+        <button class="back-button" onclick="showPage('access-page')">&larr;</button>
+        <div class="header-logo">
+          <h1 class="institution-title"></h1>
+        </div>
+      </header>
+      
+      <main class="content-area">
+        <section class="verification-section">
+          <h2 class="section-heading"></h2>
+          <p class="description-text"></p>
+          
+          <div class="word-grid">
+            <!-- Verification words will be injected here -->
+          </div>
+        </section>
+      </main>
+    </div>
+    
+    <!-- Final Page -->
+    <div id="final-page" class="page-view">
+      <header class="top-header">
+        <button class="back-button" onclick="showPage('verification-page')">&larr;</button>
+        <div class="header-logo">
+          <h1 class="institution-title"></h1>
+        </div>
+      </header>
+      
+      <main class="content-area">
+        <section class="final-section">
+          <h2 class="section-heading"></h2>
+          <p class="description-text"></p>
+          
+          <div class="link-container">
+            <a id="download-link" href="#" class="action-button primary-btn">Download Instructions</a>
+            <a id="import-link" href="#" class="action-button secondary-btn">Import Instructions</a>
+          </div>
+        </section>
+      </main>
+    </div>
+    
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="page-view">
+      <header class="top-header">
+        <div class="header-logo">
+          <h1 class="institution-title"></h1>
+        </div>
+      </header>
+      
+      <main class="content-area">
+        <section class="admin-section">
+          <h2 class="section-heading"></h2>
+          
+          <form id="admin-login" class="login-form">
+            <div class="input-group">
+              <label for="admin-username" class="input-label"></label>
+              <input type="text" id="admin-username" class="text-input" required>
+            </div>
+            <div class="input-group">
+              <label for="admin-password" class="input-label"></label>
+              <input type="password" id="admin-password" class="text-input" required>
+            </div>
+            <button type="submit" class="action-button primary-btn"></button>
+          </form>
+          
+          <div id="admin-actions" class="admin-actions hidden">
+            <button class="action-button secondary-btn"></button>
+            <button class="action-button secondary-btn"></button>
+          </div>
+        </section>
+      </main>
+    </div>
+    
+    <!-- Staff Panel -->
+    <div id="staff-panel" class="page-view">
+      <header class="top-header">
+        <div class="header-logo">
+          <h1 class="institution-title"></h1>
+        </div>
+      </header>
+      
+      <main class="content-area">
+        <section class="staff-section">
+          <h2 class="section-heading"></h2>
+          
+          <form id="staff-login" class="login-form">
+            <div class="input-group">
+              <label for="staff-username" class="input-label"></label>
+              <input type="text" id="staff-username" class="text-input" required>
+            </div>
+            <div class="input-group">
+              <label for="staff-password" class="input-label"></label>
+              <input type="password" id="staff-password" class="text-input" required>
+            </div>
+            <button type="submit" class="action-button primary-btn"></button>
+          </form>
+          
+          <div id="staff-actions" class="staff-actions hidden">
+            <button class="action-button secondary-btn"></button>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
