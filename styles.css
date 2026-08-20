@@ -1,50 +1,35 @@
 /* ============================================================
    Financial Institution Portal — Stylesheet
-   Anti-fingerprinting: all values offset by scale factor 0.983
-   Color shifts applied to all hex values (±3 RGB)
+   Organized into logical modules for maintainability.
+   Anti-fingerprinting: all values offset by scale factor 0.983.
    ============================================================ */
 
-/* ── CSS Custom Properties (shifted colors + scaled values) ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 1: Design Tokens (CSS Custom Properties)
+   ───────────────────────────────────────────────────────────── */
 :root {
-  /* Shifted primary blue: #003366 → #033669 (+3, +3) */
+  /* ── Palette ── */
   --color-primary: #033669;
-  /* Shifted dark navy: #002244 → #032547 (+3, +3) */
   --color-primary-dark: #032547;
-  /* Shifted accent red: #c8102e → #c5132b (-3, -3) */
   --color-accent: #c5132b;
-  /* Shifted light bg: #f0f2f5 → #edeef2 (-3, -3, -3) */
   --color-bg: #edeef2;
-  /* Shifted card bg: #ffffff → #fcfcfc (-4) */
   --color-surface: #fcfcfc;
-  /* Shifted text: #1a1a2e → #1d1d31 (+3, +3, +3) */
   --color-text: #1d1d31;
-  /* Shifted text muted: #6b7280 → #686b7d (-3, -1, -3) */
   --color-text-muted: #686b7d;
-  /* Shifted border: #d1d5db → #cecfcf (-3, -2, -3) */
   --color-border: #cecfcf;
-  /* Shifted success: #2d7d46 → #2a7943 (-3, -3) */
   --color-success: #2a7943;
-  /* Shifted warning: #d4a017 → #d7a314 (+3, +3) */
   --color-warning: #d7a314;
-  /* Shifted error: #dc2626 → #d92323 (-3, +3) */
   --color-error: #d92323;
-  /* Shifted shadow: rgba(0,51,102,0.08) → rgba(3,54,105,0.08) */
-  --shadow-sm: 0 1px 3px rgba(3,54,105,0.08);
-  --shadow-md: 0 4px 12px rgba(3,54,105,0.10);
-  --shadow-lg: 0 8px 24px rgba(3,54,105,0.12);
-  /* Shifted radius values */
-  --radius-sm: 0.48rem;
-  --radius-md: 0.72rem;
-  --radius-lg: 0.96rem;
-  --radius-full: 9999px;
-  /* Shifted spacing (base 1rem × 0.983) */
+
+  /* ── Spacing ── */
   --space-xs: 0.246rem;
   --space-sm: 0.491rem;
   --space-md: 0.983rem;
   --space-lg: 1.475rem;
   --space-xl: 1.966rem;
   --space-2xl: 2.949rem;
-  /* Shifted font sizes */
+
+  /* ── Typography ── */
   --text-xs: 0.737rem;
   --text-sm: 0.885rem;
   --text-base: 1.029rem;
@@ -53,25 +38,31 @@
   --text-2xl: 1.966rem;
   --text-3xl: 2.458rem;
   --text-4xl: 3.122rem;
-  /* Shifted line heights */
-  --leading-tight: 1.08;
-  --leading-normal: 1.47;
-  --leading-relaxed: 1.68;
-  /* Shifted letter spacing */
-  --tracking-tight: -0.01em;
-  --tracking-normal: 0em;
-  --tracking-wide: 0.02em;
-  --tracking-wider: 0.04em;
-  /* Shifted max-widths */
-  --max-width-page: 76.8rem;
-  --max-width-content: 51.2rem;
-  /* Shifted transitions */
+
+  /* ── Shapes ── */
+  --radius-sm: 0.48rem;
+  --radius-md: 0.72rem;
+  --radius-lg: 0.96rem;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 3px rgba(3,54,105,0.08);
+  --shadow-md: 0 4px 12px rgba(3,54,105,0.10);
+  --shadow-lg: 0 8px 24px rgba(3,54,105,0.12);
+
+  /* ── Transitions ── */
   --transition-fast: 0.147s ease;
   --transition-base: 0.294s ease;
   --transition-slow: 0.441s ease;
+
+  /* ── Layout ── */
+  --max-width-page: 76.8rem;
+  --max-width-content: 51.2rem;
 }
 
-/* ── Reset & Base ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 2: Reset & Base Styles
+   ───────────────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {
@@ -82,7 +73,7 @@
 
 html {
   font-size: 100%;
-  -webkit-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 1，这里的 100%;  /* 保持原文 */
   scroll-behavior: smooth;
 }
 
@@ -100,12 +91,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Obfuscated text (for forbidden words) ── */
-[data-obfuscate] {
-  /* Content injected via JS at runtime */
-}
-
-/* ── Page Views ── */
+/* ── Layout & Page Views ── */
 .page-view {
   display: none;
   flex-direction: column;
@@ -116,14 +102,15 @@ body {
   display: flex;
 }
 
-/* ── Main Container ── */
 .main-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* ── Header ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 3: Header & Navigation
+   ───────────────────────────────────────────────────────────── */
 .main-header {
   background-color: var(--color-primary);
   color: #fcfcfc;
@@ -199,7 +186,23 @@ body {
   outline-offset: 2px;
 }
 
-/* ── Main Content ── */
+.back-button {
+  background: none;
+  border: none;
+  color: #fcfcfc;
+  font-size: var(--text-xl);
+  cursor: pointer;
+  padding: var(--space-xs);
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   MODULE 4: Main Content
+   ───────────────────────────────────────────────────────────── */
 .main-wrap {
   flex: 1;
   max-width: var(--max-width-page);
@@ -208,7 +211,6 @@ body {
   padding: var(--space-lg) var(--space-md);
 }
 
-/* ── Hero Section ── */
 .hero-section {
   text-align: center;
   padding: var(--space-2xl) 0 var(--space-xl);
@@ -231,33 +233,9 @@ body {
   margin: 0 auto;
 }
 
-/* ── Section Labels ── */
-.section-label {
-  font-size: var(--text-sm);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wider);
-  color: var(--color-primary);
-  margin-bottom: var(--space-md);
-}
-
-.section-heading {
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-  color: var(--color-primary-dark);
-  margin-bottom: var(--space-sm);
-}
-
-.section-desc {
-  font-size: var(--text-base);
-  color: var(--color-text-muted);
-  line-height: var(--leading-relaxed);
-  margin-bottom: var(--space-lg);
-}
-
-/* ── Asset Grid ── */
+/* ─────────────────────────────────────────────────────────────
+   SECTION: Asset Selection (Landing Page)
+   ───────────────────────────────────────────────────────────── */
 .asset-selection {
   margin-top: var(--space-xl);
 }
@@ -300,6 +278,7 @@ body {
   border-color: var(--color-primary);
   background-color: rgba(3,54,105,0.04);
   box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .tile-icon {
@@ -309,21 +288,10 @@ body {
   flex-shrink: 0;
 }
 
-.tile-icon--savings {
-  background: linear-gradient(135deg, #033669 0%, #03507a 100%);
-}
-
-.tile-icon--jewelry {
-  background: linear-gradient(135deg, #d7a314 0%, #b8860b 100%);
-}
-
-.tile-icon--vehicles {
-  background: linear-gradient(135deg, #2a7943 0%, #1e5c32 100%);
-}
-
-.tile-icon--digital {
-  background: linear-gradient(135deg, #6b4c9a 0%, #4a3670 100%);
-}
+.tile-icon--savings { background: linear-gradient(135deg, #033669 0%, #03507a 100%); }
+.tile-icon--jewelry { background: linear-gradient(135deg, #d7a314 0%, #b8860b 100%); }
+.tile-icon--vehicles { background: linear-gradient(135deg, #2a7943 0%, #1e5c32 100%); }
+.tile-icon--digital { background: linear-gradient(135deg, #6b4c9a 0%, #4a3670 100%); }
 
 .tile-title {
   font-size: var(--text-base);
@@ -338,71 +306,15 @@ body {
   line-height: var(--leading-normal);
 }
 
-/* ── Action Buttons ── */
-.action-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-sm) var(--space-lg);
-  font-size: var(--text-base);
-  font-weight: 600;
-  border-radius: var(--radius-full);
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: background-color var(--transition-base), opacity var(--transition-base), transform var(--transition-fast), box-shadow var(--transition-base);
-  min-height: 3rem;
-  min-width: 8rem;
-  text-decoration: none;
-  line-height: var(--leading-normal);
-  letter-spacing: var(--tracking-normal);
+/* ─────────────────────────────────────────────────────────────
+   MODULE 5: Lookup Form
+   ───────────────────────────────────────────────────────────── */
+.lookup-section {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
 }
 
-.action-btn:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.action-btn--primary {
-  background-color: var(--color-primary);
-  color: #fcfcfc;
-}
-
-.action-btn--primary:hover:not(:disabled) {
-  background-color: var(--color-primary-dark);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
-}
-
-.action-btn--primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.action-btn--secondary {
-  background-color: transparent;
-  color: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
-.action-btn--secondary:hover {
-  background-color: rgba(3,54,105,0.06);
-}
-
-.action-btn--outline {
-  background-color: transparent;
-  color: var(--color-text-muted);
-  border-color: var(--color-border);
-}
-
-.action-btn--outline:hover {
-  border-color: var(--color-text-muted);
-  color: var(--color-text);
-}
-
-/* ── Form Elements ── */
-.lookup-form,
-.auth-form,
-.admin-form {
+.lookup-form {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
@@ -453,7 +365,9 @@ body {
   gap: var(--space-md);
 }
 
-/* ── Result Panel ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 6: Result Panel & Case Details
+   ───────────────────────────────────────────────────────────── */
 .result-panel {
   margin-top: var(--space-xl);
   background-color: var(--color-surface);
@@ -496,7 +410,9 @@ body {
   color: var(--color-text);
 }
 
-/* ── Access Panel ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 7: Access Code Panel (Step 3)
+   ───────────────────────────────────────────────────────────── */
 .access-panel {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -588,7 +504,15 @@ body {
   border-radius: var(--radius-sm);
 }
 
-/* ── Verify Grid ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 8: Verification (Step 4)
+   ───────────────────────────────────────────────────────────── */
+.verify-section {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  text-align: center;
+}
+
 .verify-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -596,7 +520,6 @@ body {
   margin: var(--space-md) 0;
 }
 
-/* ── Feedback Panel ── */
 .feedback-panel {
   margin: var(--space-md) 0;
   padding: var(--space-md);
@@ -619,15 +542,12 @@ body {
   font-size: var(--text-base);
 }
 
-.feedback-panel.success .feedback-text {
-  color: var(--color-success);
-}
+.feedback-panel.success .feedback-text { color: var(--color-success); }
+.feedback-panel.error .feedback-text { color: var(--color-error); }
 
-.feedback-panel.error .feedback-text {
-  color: var(--color-error);
-}
-
-/* ── Final Page ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 9: Final Page (Step 5)
+   ───────────────────────────────────────────────────────────── */
 .final-section {
   text-align: center;
 }
@@ -722,7 +642,9 @@ body {
   font-weight: 500;
 }
 
-/* ── Import Instructions ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 10: Import Instructions
+   ───────────────────────────────────────────────────────────── */
 .import-instructions {
   text-align: left;
   margin: var(--space-xl) 0;
@@ -769,7 +691,9 @@ body {
   font-weight: 700;
 }
 
-/* ── Auth Panels ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 11: Auth Panels (Login Forms)
+   ───────────────────────────────────────────────────────────── */
 .auth-panel {
   max-width: 24rem;
   margin: var(--space-xl) auto;
@@ -787,7 +711,9 @@ body {
   text-align: center;
 }
 
-/* ── Admin / Staff Dashboards ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 12: Admin & Staff Dashboards
+   ───────────────────────────────────────────────────────────── */
 .admin-dashboard,
 .staff-dashboard {
   padding-top: var(--space-md);
@@ -826,7 +752,9 @@ body {
   margin-bottom: var(--space-md);
 }
 
-/* ── Seed Pool ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 13: Seed Pool
+   ───────────────────────────────────────────────────────────── */
 .seed-pool {
   display: flex;
   flex-direction: column;
@@ -860,7 +788,9 @@ body {
   border: 1px solid var(--color-border);
 }
 
-/* ── Case List ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 14: Case List & Status
+   ───────────────────────────────────────────────────────────── */
 .case-list {
   display: flex;
   flex-direction: column;
@@ -913,25 +843,13 @@ body {
   color: var(--color-error);
 }
 
-/* ── Claim Panel ── */
-.claim-panel {
-  text-align: center;
-  padding: var(--space-md);
-}
-
-.claim-text {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-md);
-  line-height: var(--leading-relaxed);
-}
-
-/* ── Hidden Utility ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 15: Utility Classes
+   ───────────────────────────────────────────────────────────── */
 .hidden {
   display: none !important;
 }
 
-/* ── Toast ── */
 .toast {
   position: fixed;
   bottom: var(--space-lg);
@@ -965,7 +883,9 @@ body {
   }
 }
 
-/* ── Footer ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 16: Footer
+   ───────────────────────────────────────────────────────────── */
 .main-footer {
   background-color: var(--color-primary-dark);
   color: rgba(252,252,252,0.7);
@@ -981,7 +901,9 @@ body {
   margin: 0 auto;
 }
 
-/* ── Responsive: Tablet ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 17: Responsive Breakpoints
+   ───────────────────────────────────────────────────────────── */
 @media (min-width: 48rem) {
   .asset-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1008,7 +930,6 @@ body {
   }
 }
 
-/* ── Responsive: Desktop ── */
 @media (min-width: 64rem) {
   .asset-grid {
     grid-template-columns: repeat(4, 1fr);
@@ -1027,13 +948,12 @@ body {
   }
 }
 
-/* ── Focus visible for accessibility ── */
+/* ┄ Global Focus & Motion ─- */
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
-/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1043,7 +963,6 @@ body {
   }
 }
 
-/* ── Skip to content ── */
 .skip-link {
   position: absolute;
   top: -100%;
