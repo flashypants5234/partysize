@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+body { font-feature-settings: "cv11", "ss01"; }
+
+.accent-text {
+  background: linear-gradient(120deg, #7c3aed, #ec4899, #f59e0b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.accent-bg { background: linear-gradient(120deg, #7c3aed, #ec4899); }
+.soft-grad {
+  background:
+    radial-gradient(700px 400px at 80% -5%, rgba(124,58,237,0.10), transparent 60%),
+    radial-gradient(600px 400px at 0% 10%, rgba(236,72,153,0.08), transparent 55%);
+}
