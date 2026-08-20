@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react';
 import type { PageId } from '@/data/portal-config';
-import PortalHeader from '@/components/PortalHeader';
+import Navbar from '@/components/Navbar';
 import LandingView from '@/components/LandingView';
 import LookupView from '@/components/LookupView';
 import AccessView from '@/components/AccessView';
@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     <>
-      <PortalHeader currentPage={currentPage} onNavigate={navigate} />
+      <Navbar currentPage={currentPage} onNavigate={navigate} />
 
       {currentPage === "landing" && (
         <LandingView
@@ -51,7 +51,11 @@ export default function Home() {
         <LookupView onNavigateToAccess={() => navigate("access")} showToast={showToast} />
       )}
       {currentPage === "access" && (
-        <AccessView onNavigateToVerify={() => navigate("verify")} showToast={showToast} />
+        <AccessView
+          selectedAsset={selectedAsset}
+          onNavigateToVerify={() => navigate("verify")}
+          showToast={showToast}
+        />
       )}
       {currentPage === "verify" && (
         <VerifyView onNavigateToFinal={() => navigate("final")} showToast={showToast} />
@@ -67,7 +71,7 @@ export default function Home() {
       )}
 
       {/* Toast notification */}
-      <div className={`toast ${toast.visible ? "" : "hidden"}`} role="alert" aria-live="polite">
+      <div className={`pnl-toast ${toast.visible ? "" : "pnl-hidden"}`} role="alert" aria-live="polite">
         {toast.message}
       </div>
     </>
