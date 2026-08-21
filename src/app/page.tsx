@@ -56,9 +56,9 @@ export default function Home() {
           <div className="subnav-links">
             <Link href="/coverage">Digital Holdings</Link>
             <Link href="/coverage">Savings</Link>
-            <Link href="/coverage">Jewelry &amp; Valuables</Link>
+            <Link href="/coverage">Personal Valuables</Link>
             <Link href="/coverage">Vehicles</Link>
-            <Link href="/about">Resources</Link>
+            <Link href="/coverage">Property</Link>
           </div>
           <div className="subnav-actions">
             <Link href="/claims" className="btn btn-outline btn-sm">
