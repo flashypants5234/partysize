@@ -64,9 +64,6 @@ export default function Home() {
             <Link href="/claims" className="btn btn-outline btn-sm">
               Claims
             </Link>
-            <Link href="/portal" className="btn btn-primary btn-sm">
-              Pay a Bill
-            </Link>
           </div>
         </div>
       </div>
