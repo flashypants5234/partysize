@@ -7,8 +7,13 @@ import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 const PANEL_PATH = "/808admin-panel";
 
+function toDevEmail(identifier: string) {
+  return identifier.includes("@") ? identifier : `${identifier}@local.test`;
+}
+
 export async function loginAdminPanel(formData: FormData) {
-  const email = String(formData.get("email") ?? "").trim();
+  const identifier = String(formData.get("email") ?? "").trim();
+  const email = toDevEmail(identifier);
   const password = String(formData.get("password") ?? "");
   const supabase = await createSupabaseServerClient();
 
@@ -120,7 +125,8 @@ export async function createWorkerAccount(formData: FormData) {
     redirect(`${PANEL_PATH}?error=${encodeURIComponent("Not authorized")}`);
   }
 
-  const email = String(formData.get("email") ?? "").trim();
+  const identifier = String(formData.get("email") ?? "").trim();
+  const email = toDevEmail(identifier);
   const password = String(formData.get("password") ?? "");
   const displayName = String(formData.get("displayName") ?? "").trim() || null;
   const role = String(formData.get("role") ?? "worker");

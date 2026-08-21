@@ -39,16 +39,17 @@ export default async function AdminPanelPage({
             )}
             <form action={loginAdminPanel} className="form-card">
               <div className="field">
-                <label htmlFor="email">Email</label>
-                <input id="email" name="email" type="email" required />
+                <label htmlFor="email">Username</label>
+                <input id="email" name="email" type="text" required placeholder="admin" />
               </div>
               <div className="field">
                 <label htmlFor="password">Password</label>
-                <input id="password" name="password" type="password" required />
+                <input id="password" name="password" type="password" required placeholder="temp" />
               </div>
               <button type="submit" className="btn btn-primary btn-block">
                 Sign In
               </button>
+              <p className="form-note">Dev login: admin / temp</p>
             </form>
           </div>
         </section>
@@ -229,8 +230,8 @@ export default async function AdminPanelPage({
             <h2>Workers</h2>
             <form action={createWorkerAccount} className="field-row">
               <div className="field">
-                <label htmlFor="w-email">Email</label>
-                <input id="w-email" name="email" type="email" required />
+                <label htmlFor="w-email">Username or Email</label>
+                <input id="w-email" name="email" type="text" required placeholder="worker or worker@example.com" />
               </div>
               <div className="field">
                 <label htmlFor="w-password">Temporary Password</label>
