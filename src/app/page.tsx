@@ -22,7 +22,7 @@ export default function WelcomePage() {
                     </Link>
                 </div>
             </header>
-            <section className="case-hero">
+            <section className="case-hero case-hero-bgimg-home">
                 <div className="container case-hero-grid">
                     <div>
                         <div className="eyebrow">Client Support Portal</div>

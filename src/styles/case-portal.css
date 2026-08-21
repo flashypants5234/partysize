@@ -26,6 +26,12 @@
   background: var(--navy-950) url("/assets/hero-bg-fade.png") left center / cover no-repeat;
 }
 
+/* Optional photo background for the homepage hero.
+   Reversible: delete this block and remove "case-hero-bgimg-home" from src/app/page.tsx. */
+.as-skin .case-hero.case-hero-bgimg-home {
+  background: var(--navy-950) url("/assets/hero-bg-seal.jpg") left center / cover no-repeat;
+}
+
 .as-skin .case-hero-grid {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
