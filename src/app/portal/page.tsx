@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getCaseSession } from "@/lib/case-session";
 import { CATEGORIES } from "@/data/coverage-categories";
 import { chooseCategory, logOutCaseSession } from "./actions";
+import CategoryIcon from "@/components/CategoryIcon";
 import "@/styles/category-buttons.css";
 
 export default async function PortalPage() {
@@ -77,7 +78,11 @@ export default async function PortalPage() {
               <form key={cat.key} action={chooseCategory}>
                 <input type="hidden" name="category" value={cat.key} />
                 <button type="submit" className="category-btn">
-                  {cat.label}
+                  <span className="category-btn-icon">
+                    <CategoryIcon category={cat.key} size={28} />
+                  </span>
+                  <span className="category-btn-label">{cat.label}</span>
+                  <span className="category-btn-desc">{cat.description}</span>
                 </button>
               </form>
             ))}

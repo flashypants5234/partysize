@@ -17,6 +17,7 @@ export type Question = {
 export type Category = {
   key: CategoryKey;
   label: string;
+  description: string;
   questions: Question[];
 };
 
@@ -24,6 +25,7 @@ export const CATEGORIES: Category[] = [
   {
     key: "financial",
     label: "Financial Account Protection",
+    description: "Checking, savings & money market",
     questions: [
       {
         key: "account_type",
@@ -45,6 +47,7 @@ export const CATEGORIES: Category[] = [
   {
     key: "savings",
     label: "Savings & Investment",
+    description: "CDs, brokerage & investment accounts",
     questions: [
       {
         key: "account_kind",
@@ -66,6 +69,7 @@ export const CATEGORIES: Category[] = [
   {
     key: "auto",
     label: "Auto Insurance",
+    description: "Everyday, classic & collector vehicles",
     questions: [
       {
         key: "vehicle_type",
@@ -87,6 +91,7 @@ export const CATEGORIES: Category[] = [
   {
     key: "home",
     label: "Home Insurance",
+    description: "Primary, rental & vacation properties",
     questions: [
       {
         key: "property_type",
@@ -108,6 +113,7 @@ export const CATEGORIES: Category[] = [
   {
     key: "digital",
     label: "Digital Assets",
+    description: "Crypto, NFTs & stablecoins",
     questions: [
       {
         key: "asset_kind",
@@ -134,6 +140,7 @@ export const CATEGORIES: Category[] = [
   {
     key: "valuables",
     label: "Valuables & Collectables",
+    description: "Jewelry, art & watches",
     questions: [
       {
         key: "item_kind",
@@ -155,6 +162,7 @@ export const CATEGORIES: Category[] = [
   {
     key: "life",
     label: "Life Insurance",
+    description: "Income replacement & estate planning",
     questions: [
       {
         key: "coverage_goal",
@@ -176,6 +184,7 @@ export const CATEGORIES: Category[] = [
   {
     key: "business",
     label: "Business Assets",
+    description: "Equipment, inventory & treasury",
     questions: [
       {
         key: "asset_kind",

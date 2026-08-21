@@ -2,8 +2,8 @@
 
 .case-shell .category-grid-support {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
   margin-top: 28px;
 }
 
@@ -14,17 +14,15 @@
 
 .case-shell .category-grid-support .category-btn {
   width: 100%;
-  min-height: 96px;
+  min-height: 130px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 18px 14px;
+  gap: 8px;
+  padding: 18px 12px;
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  line-height: 1.3;
   color: var(--navy-950);
   background: var(--paper-white);
   border: 1px solid var(--rule-dark);
@@ -49,19 +47,39 @@
   background: var(--rule);
 }
 
-@media (max-width: 900px) {
+.case-shell .category-btn-icon {
+  color: var(--federal-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.case-shell .category-btn-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+
+.case-shell .category-btn-desc {
+  font-size: 0.74rem;
+  font-weight: 400;
+  color: var(--slate-light);
+  line-height: 1.3;
+}
+
+@media (min-width: 640px) {
   .case-shell .category-grid-support {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
-@media (max-width: 480px) {
-  .case-shell .category-grid-support {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 380px) {
   .case-shell .category-grid-support .category-btn {
-    min-height: 80px;
-    font-size: 0.88rem;
-    padding: 16px 12px;
+    min-height: 116px;
+    padding: 14px 8px;
+  }
+  .case-shell .category-btn-label {
+    font-size: 0.82rem;
   }
 }
