@@ -3,6 +3,8 @@
 import { useEffect, useState, FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import CaseLocatedCard from "@/components/portal/CaseLocatedCard";
+import OnboardingQuestionnaire from "@/components/portal/OnboardingQuestionnaire";
+import QuoteSection from "@/components/portal/QuoteSection";
 
 interface CaseSessionData {
   onboarding_enabled: boolean;
@@ -31,13 +33,14 @@ export default function PortalPage() {
     const { data, error: rpcError } = await supabase.rpc("get_case_session", {
       p_token: sessionToken,
     });
-    if (rpcError || !data || (data as CaseSessionData[]).length === 0) {
+    const rows = (data ?? []) as CaseSessionData[];
+    if (rpcError || rows.length === 0) {
       window.localStorage.removeItem(TOKEN_KEY);
       setToken(null);
       setCaseData(null);
       return;
     }
-    setCaseData((data as CaseSessionData[])[0]);
+    setCaseData(rows[0]);
   };
 
   useEffect(() => {
@@ -58,7 +61,6 @@ export default function PortalPage() {
     const { data, error: rpcError } = await supabase.rpc("validate_case_id", {
       p_code: code.trim(),
     });
-
     setLoading(false);
 
     const rows = (data ?? []) as { session_token: string; onboarding_enabled: boolean }[];
@@ -120,6 +122,8 @@ export default function PortalPage() {
     );
   }
 
+  const needsOnboarding = caseData.onboarding_enabled && !caseData.responses;
+
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
       <div className="flex items-center justify-between">
@@ -140,6 +144,12 @@ export default function PortalPage() {
         caseOverview={caseData.case_overview}
         caseNotes={caseData.case_notes}
       />
+
+      {needsOnboarding ? (
+        <OnboardingQuestionnaire token={token} onComplete={() => loadSession(token)} />
+      ) : (
+        <QuoteSection token={token} />
+      )}
     </div>
   );
 }

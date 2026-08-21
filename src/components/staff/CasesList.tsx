@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import CaseDetailPanel from "./CaseDetailPanel";
 import type { CaseRow } from "@/types/staff";
@@ -31,7 +31,7 @@ export default function CasesList({
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshKey]);
+  }, [refreshKey, includeAdminSeeds]);
 
   return (
     <div className="overflow-x-auto rounded-lg border border-gray-200">
@@ -48,8 +48,8 @@ export default function CasesList({
         </thead>
         <tbody className="divide-y divide-gray-200">
           {cases.map((c) => (
-            <>
-              <tr key={c.id}>
+            <Fragment key={c.id}>
+              <tr>
                 <td className="px-4 py-2 font-mono">{c.code}</td>
                 <td className="px-4 py-2">{c.protected_party_name ?? "—"}</td>
                 <td className="px-4 py-2">{c.client_status}</td>
@@ -67,11 +67,16 @@ export default function CasesList({
               {expandedId === c.id && (
                 <tr>
                   <td colSpan={6} className="bg-gray-50 px-4 py-4">
-                    <CaseDetailPanel caseRow={c} staffId={staffId} onChange={load} />
+                    <CaseDetailPanel
+                      caseRow={c}
+                      staffId={staffId}
+                      isAdmin={isAdmin}
+                      onChange={load}
+                    />
                   </td>
                 </tr>
               )}
-            </>
+            </Fragment>
           ))}
           {cases.length === 0 && (
             <tr>

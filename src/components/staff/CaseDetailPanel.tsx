@@ -3,15 +3,18 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useRateLimit } from "@/lib/rateLimit";
+import CaseQuotePanel from "@/components/admin/CaseQuotePanel";
 import type { CaseRow, NoteRow, OnboardingResponseRow } from "@/types/staff";
 
 export default function CaseDetailPanel({
   caseRow,
   staffId,
+  isAdmin,
   onChange,
 }: {
   caseRow: CaseRow;
   staffId: string;
+  isAdmin: boolean;
   onChange: () => void;
 }) {
   const [specialistName, setSpecialistName] = useState(caseRow.specialist_name ?? "");
@@ -30,6 +33,8 @@ export default function CaseDetailPanel({
 
   const guardSave = useRateLimit();
   const guardNote = useRateLimit();
+
+  const canEdit = isAdmin || caseRow.assigned_staff_id === staffId;
 
   const loadExtras = () => {
     supabase
@@ -80,7 +85,9 @@ export default function CaseDetailPanel({
     setSuccessMessage(
       `Case located successfully\nassigned specialist: ${specialistName || "—"}\nprotected party: ${
         protectedPartyName || "—"
-      }\nCase Overview: ${caseOverview || "—"}\nstatus: ${clientStatus}\ncase notes: ${caseNotes || "—"}`
+      }\nCase Overview: ${caseOverview || "—"}\nstatus: ${clientStatus}\ncase notes: ${
+        caseNotes || "—"
+      }`
     );
     onChange();
   };
@@ -113,70 +120,91 @@ export default function CaseDetailPanel({
 
   return (
     <div className="space-y-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
+      {!canEdit && (
+        <p className="rounded bg-yellow-100 px-3 py-2 text-sm text-yellow-800">
+          Read-only: this case is assigned to another specialist.
+        </p>
+      )}
+
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className="mb-1 block text-sm font-medium">Assigned Specialist</label>
           <input
             value={specialistName}
+            disabled={!canEdit}
             onChange={(e) => setSpecialistName(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 disabled:bg-gray-100"
           />
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium">Protected Party</label>
           <input
             value={protectedPartyName}
+            disabled={!canEdit}
             onChange={(e) => setProtectedPartyName(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 disabled:bg-gray-100"
           />
         </div>
         <div className="sm:col-span-2">
           <label className="mb-1 block text-sm font-medium">Case Overview</label>
           <textarea
             value={caseOverview}
+            disabled={!canEdit}
             onChange={(e) => setCaseOverview(e.target.value)}
             rows={3}
-            className="w-full rounded-md border border-gray-300 px-3 py-2"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 disabled:bg-gray-100"
           />
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium">Status</label>
           <input
             value={clientStatus}
+            disabled={!canEdit}
             onChange={(e) => setClientStatus(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 disabled:bg-gray-100"
           />
         </div>
         <div className="sm:col-span-2">
           <label className="mb-1 block text-sm font-medium">Case Notes</label>
           <textarea
             value={caseNotes}
+            disabled={!canEdit}
             onChange={(e) => setCaseNotes(e.target.value)}
             rows={2}
-            className="w-full rounded-md border border-gray-300 px-3 py-2"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 disabled:bg-gray-100"
           />
         </div>
       </div>
 
       <label className="flex items-center gap-2 text-sm font-medium">
-        <input type="checkbox" checked={onboardingEnabled} onChange={handleToggleOnboarding} />
+        <input
+          type="checkbox"
+          checked={onboardingEnabled}
+          disabled={!canEdit}
+          onChange={handleToggleOnboarding}
+        />
         Onboarding questionnaire enabled
       </label>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        onClick={handleSave}
-        disabled={saving}
-        className="rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-60"
-      >
-        {saving ? "Saving…" : "Save Case Profile"}
-      </button>
+
+      {canEdit && (
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+        >
+          {saving ? "Saving…" : "Save Case Profile"}
+        </button>
+      )}
 
       {successMessage && (
         <pre className="whitespace-pre-wrap rounded-md border border-green-300 bg-green-50 p-3 text-sm text-green-800">
           {successMessage}
         </pre>
       )}
+
+      {isAdmin && <CaseQuotePanel caseId={caseRow.id} staffId={staffId} />}
 
       <div>
         <h3 className="mb-2 font-semibold">Client Onboarding Responses</h3>
@@ -185,19 +213,26 @@ export default function CaseDetailPanel({
         ) : (
           <div className="space-y-2">
             {responses.map((r) => (
-              <pre
-                key={r.id}
-                className="overflow-x-auto rounded-md bg-white p-3 text-xs text-gray-700 ring-1 ring-gray-200"
-              >
-                {JSON.stringify(r.responses, null, 2)}
-              </pre>
+              <div key={r.id} className="rounded-md bg-white p-3 ring-1 ring-gray-200">
+                <p className="mb-1 text-xs text-gray-400">
+                  Submitted {new Date(r.submitted_at).toLocaleString()}
+                </p>
+                <dl className="space-y-1 text-sm">
+                  {Object.entries(r.responses).map(([k, v]) => (
+                    <div key={k} className="flex gap-2">
+                      <dt className="font-medium capitalize">{k.replace(/_/g, " ")}:</dt>
+                      <dd className="text-gray-700">{String(v)}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
             ))}
           </div>
         )}
       </div>
 
       <div>
-        <h3 className="mb-2 font-semibold">Private Notes (staff + admin only)</h3>
+        <h3 className="mb-2 font-semibold">Private Notes (you + admin only)</h3>
         <div className="mb-3 space-y-2">
           {notes.map((n) => (
             <div key={n.id} className="rounded-md bg-white p-2 text-sm ring-1 ring-gray-200">
@@ -207,6 +242,7 @@ export default function CaseDetailPanel({
               </div>
             </div>
           ))}
+          {notes.length === 0 && <p className="text-sm text-gray-500">No private notes yet.</p>}
         </div>
         <div className="flex gap-2">
           <input
