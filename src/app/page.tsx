@@ -41,55 +41,45 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight text-navy-900 sm:text-5xl">
-              Manage your case
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent-600">
+              American-First Asset Protection
+            </p>
+            <h1 className="mt-4 text-4xl font-bold tracking-tight text-navy-900 sm:text-5xl">
+              Protecting what you&apos;ve built, backed by American standards.
             </h1>
             <p className="mt-4 max-w-md text-base text-slate-600 sm:text-lg">
-              Log in to check your status anytime. Your data stays encrypted and protected,
-              around the clock.
+              Log in to manage your case, or continue with the Case ID our team provided you.
             </p>
 
-            <div className="mt-8">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <button
                 type="button"
                 className="rounded-md bg-accent-500 px-8 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-accent-600"
               >
                 Log In
               </button>
-            </div>
-
-            <div className="mt-6 flex flex-col gap-2 text-sm font-semibold text-navy-900 sm:flex-row sm:items-center sm:gap-8">
-              <Link href="/access" className="inline-flex items-center gap-1 hover:text-accent-600">
-                New user? Have a Case ID?
-                <ChevronRight className="h-4 w-4" aria-hidden />
-              </Link>
-              <Link href="/access" className="inline-flex items-center gap-1 hover:text-accent-600">
-                Check your coverage status
-                <ChevronRight className="h-4 w-4" aria-hidden />
+              <Link
+                href="/access"
+                className="rounded-md border-2 border-navy-900 px-8 py-3 text-center text-sm font-semibold text-navy-900 transition hover:bg-navy-900 hover:text-white"
+              >
+                Have an existing case with us?
               </Link>
             </div>
           </div>
 
           <div className="relative mx-auto hidden max-w-xs lg:block">
-            <div className="absolute right-0 top-1/2 -z-10 grid -translate-y-1/2 translate-x-16 grid-cols-3 gap-3">
-              {Array.from({ length: 9 }).map((_, i) => (
-                <span key={i} className="h-2 w-2 rounded-full bg-accent-500/70" />
-              ))}
-            </div>
             <div className="absolute inset-0 -z-10 scale-125 rounded-full bg-accent-100" />
             <div className="overflow-hidden rounded-[2rem] border-[6px] border-navy-900 bg-white shadow-2xl">
               <div className="bg-navy-900 px-4 py-3 text-center text-xs font-bold tracking-widest text-white">
                 AMERICAN SHIELD
               </div>
-              <div className="flex flex-col items-center justify-center gap-4 px-6 py-16">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-navy-900">
-                  <ShieldCheck className="h-8 w-8 text-white" aria-hidden />
-                </div>
-                <p className="text-center text-sm font-bold text-navy-900">
-                  Bank-Level Security
-                </p>
-                <p className="text-center text-xs text-slate-500">
-                  256-bit encryption protects every case, every time.
+              <div className="space-y-3 p-5">
+                <p className="text-sm font-semibold text-navy-900">Welcome back</p>
+                <div className="h-9 rounded-md border border-slate-300 bg-slate-50" />
+                <div className="h-9 rounded-md border border-slate-300 bg-slate-50" />
+                <div className="h-9 rounded-md bg-accent-500" />
+                <p className="text-center text-xs font-medium text-accent-600">
+                  Have a Case ID? Continue
                 </p>
               </div>
             </div>
