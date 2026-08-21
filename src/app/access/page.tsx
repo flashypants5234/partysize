@@ -59,8 +59,14 @@ export default async function AccessPage(
                                         placeholder="e.g. CASE-AB12CD"
                                         required />
                                 </div>
-                                <button type="submit" className="btn btn-brass btn-brass-white btn-block">Access My Case
-                                                    </button>
+                                <button
+                                    type="submit"
+                                    className="btn btn-brass btn-block"
+                                    style={{ color: "#ffffff" }}
+                                >
+                                    Access My Case
+                                </button>
+=======
                             </form>
                             <p className="case-widget-note">Don't have a Case ID? Your specialist will send you one directly.
                                               </p>
