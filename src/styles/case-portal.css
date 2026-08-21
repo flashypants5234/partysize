@@ -20,6 +20,12 @@
 .as-skin .case-hero .eyebrow { color: var(--brass-light); }
 .as-skin .case-hero .eyebrow::before { background: var(--brass-light); }
 
+/* Optional photo background for the /access hero.
+   Reversible: delete this block and remove "case-hero-bgimg" from src/app/access/page.tsx. */
+.as-skin .case-hero.case-hero-bgimg {
+  background: var(--navy-950) url("/assets/hero-bg-fade.png") left center / cover no-repeat;
+}
+
 .as-skin .case-hero-grid {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;

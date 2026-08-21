@@ -34,7 +34,7 @@ export default async function AccessPage(
                     </Link>
                 </div>
             </header>
-            <section className="case-hero">
+            <section className="case-hero case-hero-bgimg">
                 <div className="container case-hero-grid">
                     <div>
                         <div className="eyebrow">Case Portal</div>
