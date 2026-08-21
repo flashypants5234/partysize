@@ -1,94 +1,145 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { getCaseSession } from "@/lib/case-session";
-import { CATEGORIES } from "@/data/coverage-categories";
-import { chooseCategory, logOutCaseSession } from "./actions";
-import CategoryIcon from "@/components/CategoryIcon";
-import "@/styles/category-buttons.css";
+"use client";
 
-export default async function PortalPage() {
-  const session = await getCaseSession();
+import { useEffect, useState, FormEvent } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import CaseLocatedCard from "@/components/portal/CaseLocatedCard";
 
-  if (!session) {
-    redirect("/access");
+interface CaseSessionData {
+  onboarding_enabled: boolean;
+  current_step: string;
+  selected_category: string | null;
+  case_code: string;
+  specialist_name: string | null;
+  protected_party_name: string | null;
+  case_overview: string | null;
+  client_status: string;
+  case_notes: string | null;
+  responses: Record<string, unknown> | null;
+}
+
+const TOKEN_KEY = "case_session_token";
+
+export default function PortalPage() {
+  const [code, setCode] = useState("");
+  const [token, setToken] = useState<string | null>(null);
+  const [caseData, setCaseData] = useState<CaseSessionData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [initializing, setInitializing] = useState(true);
+
+  const loadSession = async (sessionToken: string) => {
+    const { data, error: rpcError } = await supabase.rpc("get_case_session", {
+      p_token: sessionToken,
+    });
+    if (rpcError || !data || (data as CaseSessionData[]).length === 0) {
+      window.localStorage.removeItem(TOKEN_KEY);
+      setToken(null);
+      setCaseData(null);
+      return;
+    }
+    setCaseData((data as CaseSessionData[])[0]);
+  };
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem(TOKEN_KEY);
+    if (stored) {
+      setToken(stored);
+      loadSession(stored).finally(() => setInitializing(false));
+    } else {
+      setInitializing(false);
+    }
+  }, []);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    const { data, error: rpcError } = await supabase.rpc("validate_case_id", {
+      p_code: code.trim(),
+    });
+
+    setLoading(false);
+
+    const rows = (data ?? []) as { session_token: string; onboarding_enabled: boolean }[];
+    if (rpcError || rows.length === 0) {
+      setError("Case ID not found. Please check the code and try again.");
+      return;
+    }
+
+    const newToken = rows[0].session_token;
+    window.localStorage.setItem(TOKEN_KEY, newToken);
+    setToken(newToken);
+    await loadSession(newToken);
+  };
+
+  const handleExit = () => {
+    window.localStorage.removeItem(TOKEN_KEY);
+    setToken(null);
+    setCaseData(null);
+    setCode("");
+  };
+
+  if (initializing) {
+    return <div className="flex min-h-[50vh] items-center justify-center">Loading…</div>;
+  }
+
+  if (!token || !caseData) {
+    return (
+      <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-4">
+        <h1 className="mb-6 text-2xl font-semibold">Client Portal</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="case-code" className="mb-1 block text-sm font-medium">
+              Case ID
+            </label>
+            <input
+              id="case-code"
+              type="text"
+              required
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="Enter your case ID"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          {error && (
+            <p role="alert" className="text-sm text-red-600">
+              {error}
+            </p>
+          )}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+          >
+            {loading ? "Locating case…" : "Access My Case"}
+          </button>
+        </form>
+      </div>
+    );
   }
 
   return (
-    <div className="as-skin">
-      <header className="site-header">
-        <div className="header-inner">
-          <Link href="/" className="brand link-plain">
-            <svg className="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M20 2 L36 8 V19 C36 29 29 35 20 38 C11 35 4 29 4 19 V8 Z" fill="#0A1930" stroke="#B9932C" strokeWidth="1.4" />
-              <path d="M20 12 L22.8 17.2 L28.5 18 L24.3 21.8 L25.4 27.5 L20 24.6 L14.6 27.5 L15.7 21.8 L11.5 18 L17.2 17.2 Z" fill="#B9932C" />
-            </svg>
-            <span className="brand-word">
-              ASSET SHIELD<span className="placeholder-tag">Company name — placeholder</span>
-            </span>
-          </Link>
-          <form action={logOutCaseSession}>
-            <button type="submit" className="btn btn-outline btn-sm">
-              Log Out
-            </button>
-          </form>
-        </div>
-      </header>
+    <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Your Case</h1>
+        <button
+          onClick={handleExit}
+          className="rounded-md bg-gray-200 px-3 py-1.5 text-sm font-medium hover:bg-gray-300"
+        >
+          Exit
+        </button>
+      </div>
 
-      <main className="case-shell">
-        <div className="container" style={{ maxWidth: 720 }}>
-          <div className="case-found">
-            <div className="case-found-badge">✓ Case located successfully</div>
-            <div className="info-grid">
-              <div className="info-field">
-                <label>Assigned Specialist</label>
-                <div className="val">{session.specialist_name ?? "Not yet assigned"}</div>
-              </div>
-              <div className="info-field">
-                <label>Protected Party</label>
-                <div className="val">{session.protected_party_name ?? "—"}</div>
-              </div>
-              <div className="info-field">
-                <label>Case ID</label>
-                <div className="val mono">{session.case_code}</div>
-              </div>
-              <div className="info-field">
-                <label>Status</label>
-                <div className="val">
-                  <span className="badge badge-active">{session.client_status}</span>
-                </div>
-              </div>
-              <div className="info-field full">
-                <label>Case Overview</label>
-                <div className="val">{session.case_overview ?? "Your specialist will add an overview shortly."}</div>
-              </div>
-              <div className="info-field full">
-                <label>Case Notes</label>
-                <div className="val">{session.case_notes ?? "No notes on file."}</div>
-              </div>
-            </div>
-          </div>
-
-          <h2 className="text-center" style={{ marginTop: 44 }}>
-            What would you like to insure today?
-          </h2>
-          <p className="text-center small">Select a category below to continue.</p>
-
-          <div className="category-grid-support">
-            {CATEGORIES.map((cat) => (
-              <form key={cat.key} action={chooseCategory}>
-                <input type="hidden" name="category" value={cat.key} />
-                <button type="submit" className="category-btn">
-                  <span className="category-btn-icon">
-                    <CategoryIcon category={cat.key} size={28} />
-                  </span>
-                  <span className="category-btn-label">{cat.label}</span>
-                  <span className="category-btn-desc">{cat.description}</span>
-                </button>
-              </form>
-            ))}
-          </div>
-        </div>
-      </main>
+      <CaseLocatedCard
+        specialistName={caseData.specialist_name}
+        protectedPartyName={caseData.protected_party_name}
+        caseCode={caseData.case_code}
+        clientStatus={caseData.client_status}
+        caseOverview={caseData.case_overview}
+        caseNotes={caseData.case_notes}
+      />
     </div>
   );
 }

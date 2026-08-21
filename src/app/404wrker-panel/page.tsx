@@ -1,21 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { useStaffSession } from "@/hooks/useStaffSession";
 import StaffLoginForm from "@/components/staff/StaffLoginForm";
 import NotAuthorized from "@/components/staff/NotAuthorized";
+import WrongPanel from "@/components/staff/WrongPanel";
 import WorkerDashboard from "@/components/worker/WorkerDashboard";
 
 export default function WorkerPanelPage() {
   const { session, role, staffId, loading } = useStaffSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && role === "admin") {
-      router.replace("/808admin-panel");
-    }
-  }, [loading, role, router]);
 
   if (loading) {
     return <div className="flex min-h-[50vh] items-center justify-center">Loading…</div>;
@@ -25,13 +17,13 @@ export default function WorkerPanelPage() {
     return <StaffLoginForm />;
   }
 
-  if (role !== "worker" && role !== "admin") {
+  if (role === "admin") {
+    return <WrongPanel requiredRole="worker" />;
+  }
+
+  if (role !== "worker" || !staffId) {
     return <NotAuthorized />;
   }
 
-  if (role === "admin") {
-    return null;
-  }
-
-  return <WorkerDashboard staffId={staffId!} />;
+  return <WorkerDashboard staffId={staffId} />;
 }
