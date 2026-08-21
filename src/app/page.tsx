@@ -117,6 +117,7 @@ export default function Home() {
                 <select aria-label="Quick action" defaultValue="Pay a policy bill">
                   <option>Pay a policy bill</option>
                   <option>Get a certificate copy</option>
+                  <option>Contact an agent</option>
                 </select>
               </div>
               <Link href="/portal" className="btn btn-outline btn-block" style={{ marginTop: 10 }}>
