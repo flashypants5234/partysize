@@ -1,0 +1,1 @@
+ALTER TABLE public.case_ids ENABLE ROW LEVEL SECURITY;

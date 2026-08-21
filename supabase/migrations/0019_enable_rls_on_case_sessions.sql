@@ -1,0 +1,1 @@
+ALTER TABLE public.case_sessions ENABLE ROW LEVEL SECURITY;

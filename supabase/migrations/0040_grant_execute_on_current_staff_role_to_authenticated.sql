@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.current_staff_role() TO authenticated;

@@ -1,0 +1,1 @@
+ALTER TABLE public.staff_profiles ENABLE ROW LEVEL SECURITY;

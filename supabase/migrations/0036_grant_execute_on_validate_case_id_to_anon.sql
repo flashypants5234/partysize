@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.validate_case_id(TEXT) TO anon, authenticated;

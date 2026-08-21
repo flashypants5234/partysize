@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.submit_onboarding(UUID, JSONB) TO anon, authenticated;

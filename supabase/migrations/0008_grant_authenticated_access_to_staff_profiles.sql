@@ -1,0 +1,1 @@
+GRANT SELECT, INSERT, UPDATE ON TABLE public.staff_profiles TO authenticated;

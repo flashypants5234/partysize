@@ -1,0 +1,1 @@
+GRANT SELECT, INSERT ON TABLE public.audit_logs TO authenticated;

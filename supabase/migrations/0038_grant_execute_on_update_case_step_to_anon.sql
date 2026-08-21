@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.update_case_step(UUID, TEXT) TO anon, authenticated;

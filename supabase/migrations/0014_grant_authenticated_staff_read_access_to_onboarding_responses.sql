@@ -1,0 +1,1 @@
+GRANT SELECT ON TABLE public.onboarding_responses TO authenticated;
