@@ -66,8 +66,14 @@ export default async function AccessPage(
                                               </p>
                         </div>
                     </div>
-                    <div className="case-visual">
-                        <span className="ph-label">PHOTO / CAMPAIGN PLACEHOLDER</span>
+                    <div className="case-visual case-visual-photo">
+                        <Image
+                            src="/assets/access-hero.png"
+                            alt="Conference table with documents, a folder, and a pen"
+                            width={1361}
+                            height={448}
+                            className="case-visual-img"
+                        />
                     </div>
                 </div>
             </section>
