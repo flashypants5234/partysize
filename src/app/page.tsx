@@ -39,8 +39,14 @@ export default function WelcomePage() {
                                               </Link>
                         </div>
                     </div>
-                    <div className="case-visual">
-                        <span className="ph-label">PHOTO / CAMPAIGN PLACEHOLDER</span>
+                    <div className="case-visual case-visual-photo">
+                        <Image
+                            src="/assets/hero-photo.png"
+                            alt="FDIC brass nameplate on a desk with a pen and notepad"
+                            width={277}
+                            height={141}
+                            className="case-visual-img"
+                        />
                     </div>
                 </div>
             </section>

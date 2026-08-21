@@ -46,6 +46,8 @@
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.55);
 }
+.as-skin .case-visual-photo { display: block; min-height: 0; border: none; background: none; overflow: hidden; }
+.as-skin .case-visual-photo .case-visual-img { width: 100%; height: auto; display: block; }
 
 .as-skin .case-widget {
   background: var(--paper-white);
