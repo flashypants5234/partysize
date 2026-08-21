@@ -1,4 +1,4 @@
-import { Lock } from "lucide-react";
+import Link from "next/link";
 import { submitCaseId } from "./actions";
 
 export default async function AccessPage({
@@ -9,52 +9,58 @@ export default async function AccessPage({
   const { error } = await searchParams;
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-navy-950 px-4">
-      <div className="w-full max-w-md rounded-xl border border-navy-700 bg-navy-900 p-8 shadow-xl">
-        <div className="flex justify-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-500/10">
-            <Lock className="h-6 w-6 text-accent-500" aria-hidden />
+    <div className="as-skin">
+      <main id="main">
+        <section style={{ padding: "70px 0", minHeight: "70vh", display: "flex", alignItems: "center" }}>
+          <div className="container" style={{ maxWidth: 460 }}>
+            <div className="eyebrow" style={{ justifyContent: "center", display: "flex" }}>
+              Secure Log In
+            </div>
+            <h1 className="text-center" style={{ fontSize: "2rem" }}>
+              Welcome back.
+            </h1>
+
+            <div className="tabs">
+              <div className="tab active">Customer</div>
+              <Link href="/staff/login" className="tab">
+                Employee
+              </Link>
+            </div>
+
+            <form action={submitCaseId} className="form-card">
+              <div className="field">
+                <label htmlFor="caseId">Case ID</label>
+                <input
+                  id="caseId"
+                  name="caseId"
+                  type="text"
+                  autoComplete="off"
+                  placeholder="e.g. CASE-1029"
+                  required
+                />
+              </div>
+
+              {error && (
+                <p role="alert" className="small" style={{ color: "var(--alert)" }}>
+                  That Case ID couldn&apos;t be verified. Please check it and try again.
+                </p>
+              )}
+
+              <button type="submit" className="btn btn-primary btn-block">
+                Continue
+              </button>
+              <p className="form-note">Demo platform. Case IDs are issued for beta testing only.</p>
+            </form>
           </div>
+        </section>
+      </main>
+
+      <footer className="site-footer" style={{ padding: "26px 0" }}>
+        <div className="container footer-bottom" style={{ borderTop: "none" }}>
+          <span>&copy; {new Date().getFullYear()} Asset Shield, Inc. — placeholder name.</span>
+          <span>Prototype build — not a licensed insurer yet</span>
         </div>
-        <h1 className="mt-4 text-center text-xl font-semibold text-white">Beta Access</h1>
-        <p className="mt-2 text-center text-sm text-slate-400">
-          Enter the Case ID you were provided to continue.
-        </p>
-
-        <form action={submitCaseId} className="mt-6 space-y-4">
-          <div>
-            <label htmlFor="caseId" className="sr-only">
-              Case ID
-            </label>
-            <input
-              id="caseId"
-              name="caseId"
-              type="text"
-              autoComplete="off"
-              placeholder="e.g. CASE-1029"
-              required
-              className="w-full rounded-md border border-navy-600 bg-navy-800 px-4 py-3 text-center text-sm font-medium tracking-wide text-white placeholder:text-slate-500 focus:border-accent-500"
-            />
-          </div>
-
-          {error && (
-            <p role="alert" className="text-center text-sm text-red-400">
-              That Case ID couldn&apos;t be verified. Please check it and try again.
-            </p>
-          )}
-
-          <button
-            type="submit"
-            className="w-full rounded-md bg-accent-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-accent-600"
-          >
-            Continue
-          </button>
-        </form>
-
-        <p className="mt-6 text-center text-xs text-slate-500">
-          Demo platform. Case IDs are issued for beta testing only.
-        </p>
-      </div>
-    </main>
+      </footer>
+    </div>
   );
 }

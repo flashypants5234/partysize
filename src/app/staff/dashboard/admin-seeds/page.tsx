@@ -17,33 +17,39 @@ export default async function AdminSeedsPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold text-slate-900">Admin Seeds</h1>
-      <p className="mt-1 text-sm text-slate-500">
-        Case IDs flagged as admin-only. These never appear in worker views, tables, or logs.
-      </p>
+      <div className="app-topbar">
+        <div>
+          <h2 style={{ marginBottom: 2 }}>Admin Seeds</h2>
+          <p className="small" style={{ margin: 0 }}>
+            Case IDs flagged as admin-only. These never appear in worker views, tables, or logs.
+          </p>
+        </div>
+      </div>
 
-      <div className="mt-6 overflow-x-auto rounded-lg border border-slate-200 bg-white">
-        <table className="min-w-full divide-y divide-slate-200 text-sm">
-          <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+      <div className="panel">
+        <table>
+          <thead>
             <tr>
-              <th className="px-4 py-3">Code</th>
-              <th className="px-4 py-3">Contact</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Notes</th>
+              <th>Code</th>
+              <th>Contact</th>
+              <th>Status</th>
+              <th>Notes</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody>
             {(seeds ?? []).map((s) => (
               <tr key={s.id}>
-                <td className="px-4 py-3 font-medium text-slate-900">{s.code}</td>
-                <td className="px-4 py-3 text-slate-600">{s.email || s.phone || "—"}</td>
-                <td className="px-4 py-3 capitalize text-slate-600">{s.status}</td>
-                <td className="px-4 py-3 text-slate-500">{s.notes || "—"}</td>
+                <td>{s.code}</td>
+                <td className="small">{s.email || s.phone || "—"}</td>
+                <td className="small" style={{ textTransform: "capitalize" }}>
+                  {s.status}
+                </td>
+                <td className="small">{s.notes || "—"}</td>
               </tr>
             ))}
             {(!seeds || seeds.length === 0) && (
               <tr>
-                <td colSpan={4} className="px-4 py-6 text-center text-slate-400">
+                <td colSpan={4} className="empty-state">
                   No admin seeds yet.
                 </td>
               </tr>

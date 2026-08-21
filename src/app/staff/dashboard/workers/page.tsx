@@ -17,69 +17,50 @@ export default async function WorkersPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold text-slate-900">Workers</h1>
-      <p className="mt-1 text-sm text-slate-500">
-        Create and manage worker accounts. Admin-only.
-      </p>
+      <div className="app-topbar">
+        <div>
+          <h2 style={{ marginBottom: 2 }}>Employee Accounts</h2>
+          <p className="small" style={{ margin: 0 }}>
+            Create and manage worker accounts. Admin-only.
+          </p>
+        </div>
+      </div>
 
-      <form
-        action={createWorkerAccount}
-        className="mt-6 grid grid-cols-1 gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-3"
-      >
-        <input
-          name="username"
-          placeholder="Username"
-          required
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm"
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Temporary password"
-          required
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm"
-        />
-        <input
-          name="display_name"
-          placeholder="Display name (optional)"
-          className="rounded-md border border-slate-300 px-3 py-2 text-sm"
-        />
-        <button
-          type="submit"
-          className="rounded-md bg-navy-900 px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800 sm:col-span-3"
-        >
-          Create Worker Account
-        </button>
-      </form>
-
-      <div className="mt-6 overflow-x-auto rounded-lg border border-slate-200 bg-white">
-        <table className="min-w-full divide-y divide-slate-200 text-sm">
-          <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+      <div className="panel">
+        <div className="panel-head">
+          <h3>Current staff</h3>
+        </div>
+        <table>
+          <thead>
             <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Role</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3"></th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody>
             {(workers ?? []).map((w) => (
               <tr key={w.id}>
-                <td className="px-4 py-3 font-medium text-slate-900">
-                  {w.display_name ?? "—"}
+                <td>{w.display_name ?? "—"}</td>
+                <td>
+                  <span className={`badge ${w.role === "admin" ? "badge-admin" : "badge-agent"}`}>{w.role}</span>
                 </td>
-                <td className="px-4 py-3 capitalize text-slate-600">{w.role}</td>
-                <td className="px-4 py-3">
+                <td>
                   {w.active ? (
-                    <span className="text-green-700">Active</span>
+                    <span className="badge badge-active">Active</span>
                   ) : (
-                    <span className="text-slate-400">Deactivated</span>
+                    <span className="badge badge-pending">Deactivated</span>
                   )}
                 </td>
-                <td className="px-4 py-3 text-right">
+                <td>
                   {w.role === "worker" && w.active && (
                     <form action={deactivateWorker.bind(null, w.id)}>
-                      <button type="submit" className="text-xs font-semibold text-red-600 hover:underline">
+                      <button
+                        type="submit"
+                        className="small"
+                        style={{ background: "none", border: "none", color: "var(--alert)", cursor: "pointer", padding: 0 }}
+                      >
                         Deactivate
                       </button>
                     </form>
@@ -87,8 +68,41 @@ export default async function WorkersPage() {
                 </td>
               </tr>
             ))}
+            {(!workers || workers.length === 0) && (
+              <tr>
+                <td colSpan={4} className="empty-state">
+                  No worker accounts yet. Add one below.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
+      </div>
+
+      <div className="panel">
+        <div className="panel-head">
+          <h3>Add a new employee</h3>
+        </div>
+        <form action={createWorkerAccount}>
+          <div className="field-row">
+            <div className="field">
+              <label htmlFor="username">Username</label>
+              <input id="username" name="username" placeholder="Username" required />
+            </div>
+            <div className="field">
+              <label htmlFor="password">Temporary password</label>
+              <input id="password" name="password" type="password" placeholder="Temporary password" required />
+            </div>
+          </div>
+          <div className="field">
+            <label htmlFor="display_name">Display name (optional)</label>
+            <input id="display_name" name="display_name" placeholder="Display name" />
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Create Worker Account
+          </button>
+          <p className="form-note">New workers sign in with this username and password at /staff/login.</p>
+        </form>
       </div>
     </div>
   );

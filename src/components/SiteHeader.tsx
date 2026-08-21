@@ -1,39 +1,22 @@
 import Link from "next/link";
-import { Shield } from "lucide-react";
+import NavToggle from "./NavToggle";
 
-const navLinks = [
-  { href: "/coverage", label: "Coverage" },
-  { href: "/claims", label: "Claims" },
-  { href: "/about", label: "About" },
-];
-
-export default function SiteHeader() {
+export default function SiteHeader({ active }: { active?: string }) {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0a1f44] text-white">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
-          <Shield className="h-7 w-7 text-[#c8a04d]" aria-hidden="true" />
-          <span className="text-lg">American Shield</span>
+    <header className="site-header">
+      <div className="header-inner">
+        <Link href="/" className="brand link-plain">
+          <svg className="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M20 2 L36 8 V19 C36 29 29 35 20 38 C11 35 4 29 4 19 V8 Z" fill="#0A1930" stroke="#B9932C" strokeWidth="1.4" />
+            <path d="M20 12 L22.8 17.2 L28.5 18 L24.3 21.8 L25.4 27.5 L20 24.6 L14.6 27.5 L15.7 21.8 L11.5 18 L17.2 17.2 Z" fill="#B9932C" />
+          </svg>
+          <span className="brand-word">
+            ASSET SHIELD<span className="placeholder-tag">Company name — placeholder</span>
+          </span>
         </Link>
-
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-white/80 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c8a04d]"
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="main-nav">
+          <NavToggle active={active} />
         </nav>
-
-        <Link
-          href="/access"
-          className="rounded-md bg-[#c8a04d] px-5 py-2.5 text-sm font-semibold text-[#0a1f44] transition-colors hover:bg-[#e0c07a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        >
-          Access My Case
-        </Link>
       </div>
     </header>
   );

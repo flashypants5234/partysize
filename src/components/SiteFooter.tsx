@@ -1,49 +1,53 @@
 import Link from "next/link";
-import { Shield, Mail, MessageCircle } from "lucide-react";
 
 export default function SiteFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[#061530] text-white/70">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4 lg:px-8">
-        <div>
-          <div className="mb-3 flex items-center gap-2 text-white">
-            <Shield className="h-6 w-6 text-[#c8a04d]" aria-hidden="true" />
-            <span className="font-semibold">American Shield</span>
+    <footer className="site-footer">
+      <div className="container">
+        <div className="footer-grid">
+          <div>
+            <div className="brand" style={{ marginBottom: 14 }}>
+              <svg className="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{ width: 28, height: 28 }}>
+                <path d="M20 2 L36 8 V19 C36 29 29 35 20 38 C11 35 4 29 4 19 V8 Z" fill="#F6F4EE" stroke="#B9932C" strokeWidth="1.4" />
+                <path d="M20 12 L22.8 17.2 L28.5 18 L24.3 21.8 L25.4 27.5 L20 24.6 L14.6 27.5 L15.7 21.8 L11.5 18 L17.2 17.2 Z" fill="#B9932C" />
+              </svg>
+              <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, color: "#fff" }}>ASSET SHIELD</span>
+            </div>
+            <p style={{ color: "#8492A6", maxWidth: "32ch" }}>
+              Independent asset insurance. Not a bank. Not a government agency. Just serious coverage.
+            </p>
           </div>
-          <p className="text-sm">
-            Trusted asset protection built on transparency and rapid response.
-          </p>
+          <div>
+            <h4>Coverage</h4>
+            <Link href="/coverage">Digital Holdings</Link>
+            <Link href="/coverage">Savings Accounts</Link>
+            <Link href="/coverage">Jewelry &amp; Valuables</Link>
+            <Link href="/coverage">Vehicles</Link>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <Link href="/about">About</Link>
+            <Link href="/claims">Claims</Link>
+            <Link href="/about#faq">FAQ</Link>
+            <Link href="/about#contact">Contact</Link>
+          </div>
+          <div>
+            <h4>Account</h4>
+            <Link href="/access">Customer Log In</Link>
+            <Link href="/staff/login">Employee Portal</Link>
+            <Link href="/portal">Dashboard</Link>
+            <Link href="/staff/dashboard">Staff Dashboard</Link>
+          </div>
         </div>
-
-        <div>
-          <h3 className="mb-3 text-sm font-semibold text-white">Company</h3>
-          <ul className="space-y-2 text-sm">
-            <li><Link href="/about" className="hover:text-white">About Us</Link></li>
-            <li><Link href="/coverage" className="hover:text-white">Coverage</Link></li>
-            <li><Link href="/claims" className="hover:text-white">Claims</Link></li>
-          </ul>
+        <div className="footer-bottom">
+          <span>&copy; {new Date().getFullYear()} Asset Shield, Inc. — placeholder name.</span>
+          <span>Prototype build — not a licensed insurer yet</span>
         </div>
-
-        <div>
-          <h3 className="mb-3 text-sm font-semibold text-white">Access</h3>
-          <ul className="space-y-2 text-sm">
-            <li><Link href="/access" className="hover:text-white">Case ID Login</Link></li>
-            <li><Link href="/staff/login" className="hover:text-white">Staff Login</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="mb-3 text-sm font-semibold text-white">Contact</h3>
-          <ul className="space-y-2 text-sm">
-            <li className="flex items-center gap-2"><Mail className="h-4 w-4" aria-hidden="true" /> support@americanshield.com</li>
-            <li className="flex items-center gap-2"><MessageCircle className="h-4 w-4" aria-hidden="true" /> Live chat available 9–6 ET</li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="border-t border-white/10 px-4 py-6 text-center text-xs sm:px-6 lg:px-8">
-        <p>&copy; {new Date().getFullYear()} American Shield. All rights reserved.</p>
-        <p className="mt-1">American Shield is a private company and is not affiliated with, endorsed by, or sponsored by any U.S. government agency.</p>
+        <p className="footer-legal">
+          Asset Shield is an independent, privately held company and is not affiliated with, endorsed by, or a part of
+          the U.S. government or any federal agency, including the FDIC. Coverage figures shown are illustrative
+          placeholder content for this design draft.
+        </p>
       </div>
     </footer>
   );

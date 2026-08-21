@@ -16,7 +16,7 @@ export default function StaffNav({
   const router = useRouter();
 
   const links = [
-    { href: "/staff/dashboard", label: "Case IDs" },
+    { href: "/staff/dashboard", label: "Overview" },
     { href: "/staff/dashboard/sessions", label: "Sessions" },
     ...(role === "admin"
       ? [
@@ -26,6 +26,8 @@ export default function StaffNav({
       : []),
   ];
 
+  const initials = (displayName ?? role).slice(0, 2).toUpperCase();
+
   async function handleSignOut() {
     const supabase = createSupabaseBrowserClient();
     await supabase.auth.signOut();
@@ -34,37 +36,24 @@ export default function StaffNav({
   }
 
   return (
-    <header className="border-b border-slate-200 bg-white">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
+    <aside className="app-sidebar">
+      <div className="user-chip">
+        <div className="avatar">{initials}</div>
         <div>
-          <p className="text-xs uppercase tracking-wide text-slate-400">
-            Staff Portal · {role}
-          </p>
-          <p className="text-sm font-semibold text-slate-900">{displayName ?? role}</p>
+          <div className="name">{displayName ?? role}</div>
+          <div className="role">{role === "admin" ? "Admin" : "Worker"}</div>
         </div>
-        <nav className="flex flex-wrap gap-1 text-sm">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`rounded-md px-3 py-2 font-medium ${
-                pathname === link.href
-                  ? "bg-navy-900 text-white"
-                  : "text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <button
-            type="button"
-            onClick={handleSignOut}
-            className="rounded-md px-3 py-2 font-medium text-slate-600 hover:bg-slate-100"
-          >
-            Sign out
-          </button>
-        </nav>
       </div>
-    </header>
+      <nav className="app-nav">
+        {links.map((link) => (
+          <Link key={link.href} href={link.href} className={pathname === link.href ? "active" : undefined}>
+            {link.label}
+          </Link>
+        ))}
+        <a href="#" onClick={(e) => { e.preventDefault(); handleSignOut(); }}>
+          Sign out
+        </a>
+      </nav>
+    </aside>
   );
 }
