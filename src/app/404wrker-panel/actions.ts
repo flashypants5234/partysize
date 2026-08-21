@@ -47,12 +47,24 @@ export async function createCaseId(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim() || null;
   const phone = String(formData.get("phone") ?? "").trim() || null;
   const notes = String(formData.get("notes") ?? "").trim() || null;
+  const specialistName = String(formData.get("specialistName") ?? "").trim() || null;
+  const protectedPartyName = String(formData.get("protectedPartyName") ?? "").trim() || null;
+  const caseOverview = String(formData.get("caseOverview") ?? "").trim() || null;
   const code = `CASE-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
   const staffId = await currentStaffId(supabase);
 
   const { data: created, error } = await supabase
     .from("case_ids")
-    .insert({ code, email, phone, notes, created_by: staffId })
+    .insert({
+      code,
+      email,
+      phone,
+      notes,
+      specialist_name: specialistName,
+      protected_party_name: protectedPartyName,
+      case_overview: caseOverview,
+      created_by: staffId,
+    })
     .select("id")
     .single();
 
@@ -64,6 +76,40 @@ export async function createCaseId(formData: FormData) {
     staff_id: staffId,
     action: "create_case_id",
     target_case_id: created.id,
+  });
+
+  revalidatePath(PANEL_PATH);
+}
+
+export async function updateCaseDetails(formData: FormData) {
+  const supabase = await createSupabaseServerClient();
+  const id = String(formData.get("caseId"));
+  const specialistName = String(formData.get("specialistName") ?? "").trim() || null;
+  const protectedPartyName = String(formData.get("protectedPartyName") ?? "").trim() || null;
+  const caseOverview = String(formData.get("caseOverview") ?? "").trim() || null;
+  const clientStatus = String(formData.get("clientStatus") ?? "Active").trim() || "Active";
+  const notes = String(formData.get("notes") ?? "").trim() || null;
+
+  const { error } = await supabase
+    .from("case_ids")
+    .update({
+      specialist_name: specialistName,
+      protected_party_name: protectedPartyName,
+      case_overview: caseOverview,
+      client_status: clientStatus,
+      notes,
+    })
+    .eq("id", id);
+
+  if (error) {
+    redirect(`${PANEL_PATH}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  const staffId = await currentStaffId(supabase);
+  await supabase.from("audit_logs").insert({
+    staff_id: staffId,
+    action: "update_case_details",
+    target_case_id: id,
   });
 
   revalidatePath(PANEL_PATH);

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "@/styles/asset-shield-skin.css";
+import "@/styles/case-portal.css";
 
 export const metadata: Metadata = {
   title: "American Shield Insurance (Demo)",

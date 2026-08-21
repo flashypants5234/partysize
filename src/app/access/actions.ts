@@ -18,7 +18,7 @@ export async function submitCaseId(formData: FormData) {
     redirect("/access?error=1");
   }
 
-  const { session_token, onboarding_enabled } = data[0];
+  const { session_token } = data[0];
 
   const cookieStore = await cookies();
   cookieStore.set(CASE_SESSION_COOKIE, session_token, {
@@ -29,9 +29,5 @@ export async function submitCaseId(formData: FormData) {
     maxAge: 60 * 60 * 8, // 8 hours
   });
 
-  if (onboarding_enabled) {
-    redirect("/onboarding");
-  } else {
-    redirect("/portal");
-  }
+  redirect("/portal");
 }

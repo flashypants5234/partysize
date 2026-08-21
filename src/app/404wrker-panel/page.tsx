@@ -3,6 +3,7 @@ import {
   loginWorkerPanel,
   logoutWorkerPanel,
   createCaseId,
+  updateCaseDetails,
   toggleOnboardingAction,
 } from "./actions";
 
@@ -76,7 +77,9 @@ export default async function WorkerPanelPage({
 
   const { data: caseIds } = await supabase
     .from("case_ids")
-    .select("id, code, email, onboarding_enabled, status, created_at")
+    .select(
+      "id, code, email, onboarding_enabled, status, specialist_name, protected_party_name, case_overview, client_status, notes, created_at"
+    )
     .order("created_at", { ascending: false })
     .limit(50);
 
@@ -119,7 +122,19 @@ export default async function WorkerPanelPage({
                 <input id="phone" name="phone" type="text" />
               </div>
               <div className="field">
-                <label htmlFor="notes">Notes (optional)</label>
+                <label htmlFor="specialistName">Assigned Specialist (optional)</label>
+                <input id="specialistName" name="specialistName" type="text" />
+              </div>
+              <div className="field">
+                <label htmlFor="protectedPartyName">Protected Party (optional)</label>
+                <input id="protectedPartyName" name="protectedPartyName" type="text" />
+              </div>
+              <div className="field">
+                <label htmlFor="caseOverview">Case Overview (optional)</label>
+                <input id="caseOverview" name="caseOverview" type="text" />
+              </div>
+              <div className="field">
+                <label htmlFor="notes">Case Notes (optional)</label>
                 <input id="notes" name="notes" type="text" />
               </div>
               <button type="submit" className="btn btn-primary">
@@ -135,9 +150,11 @@ export default async function WorkerPanelPage({
                 <tr>
                   <th>Code</th>
                   <th>Email</th>
-                  <th>Onboarding</th>
                   <th>Status</th>
-                  <th>Action</th>
+                  <th>Onboarding</th>
+                  <th>Specialist</th>
+                  <th>Protected Party</th>
+                  <th>Details</th>
                 </tr>
               </thead>
               <tbody>
@@ -146,11 +163,8 @@ export default async function WorkerPanelPage({
                     <td>{c.code}</td>
                     <td>{c.email ?? "—"}</td>
                     <td>
-                      <span className={`badge ${c.onboarding_enabled ? "badge-success" : "badge-muted"}`}>
-                        {c.onboarding_enabled ? "Enabled" : "Disabled"}
-                      </span>
+                      <span className="badge badge-active">{c.client_status ?? "Active"}</span>
                     </td>
-                    <td>{c.status}</td>
                     <td>
                       <form action={toggleOnboardingAction}>
                         <input type="hidden" name="caseId" value={c.id} />
@@ -160,11 +174,50 @@ export default async function WorkerPanelPage({
                         </button>
                       </form>
                     </td>
+                    <td>{c.specialist_name ?? "—"}</td>
+                    <td>{c.protected_party_name ?? "—"}</td>
+                    <td>
+                      <details>
+                        <summary className="small" style={{ cursor: "pointer" }}>
+                          Edit
+                        </summary>
+                        <form action={updateCaseDetails} style={{ marginTop: 10, minWidth: 240 }}>
+                          <input type="hidden" name="caseId" value={c.id} />
+                          <div className="field">
+                            <label>Specialist name</label>
+                            <input name="specialistName" type="text" defaultValue={c.specialist_name ?? ""} />
+                          </div>
+                          <div className="field">
+                            <label>Protected party</label>
+                            <input
+                              name="protectedPartyName"
+                              type="text"
+                              defaultValue={c.protected_party_name ?? ""}
+                            />
+                          </div>
+                          <div className="field">
+                            <label>Case overview</label>
+                            <textarea name="caseOverview" rows={2} defaultValue={c.case_overview ?? ""} />
+                          </div>
+                          <div className="field">
+                            <label>Case notes</label>
+                            <textarea name="notes" rows={2} defaultValue={c.notes ?? ""} />
+                          </div>
+                          <div className="field">
+                            <label>Client-facing status</label>
+                            <input name="clientStatus" type="text" defaultValue={c.client_status ?? "Active"} />
+                          </div>
+                          <button type="submit" className="btn btn-primary btn-sm">
+                            Save
+                          </button>
+                        </form>
+                      </details>
+                    </td>
                   </tr>
                 ))}
                 {(!caseIds || caseIds.length === 0) && (
                   <tr>
-                    <td colSpan={5}>No case IDs yet.</td>
+                    <td colSpan={7}>No case IDs yet.</td>
                   </tr>
                 )}
               </tbody>

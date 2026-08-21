@@ -1,0 +1,209 @@
+/* ==========================================================================
+   CASE PORTAL — flat, gradient-free companion styles for the case-lookup /
+   coverage-selection / questionnaire / review / quote flow.
+   ========================================================================== */
+
+.as-skin .case-shell {
+  min-height: calc(100vh - 66px);
+  padding: 56px 0 80px;
+}
+
+/* ---------- Welcome / case lookup hero (flat dark, no gradient) ---------- */
+.as-skin .case-hero {
+  background: var(--navy-950);
+  color: #fff;
+  padding: 64px 0;
+  border-bottom: 3px solid var(--brass);
+}
+.as-skin .case-hero h1 { color: #fff; }
+.as-skin .case-hero .hero-lede { color: #C7D2E3; }
+.as-skin .case-hero .eyebrow { color: var(--brass-light); }
+.as-skin .case-hero .eyebrow::before { background: var(--brass-light); }
+
+.as-skin .case-hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 48px;
+  align-items: center;
+}
+@media (max-width: 900px) {
+  .as-skin .case-hero-grid { grid-template-columns: 1fr; }
+}
+
+.as-skin .case-visual {
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius);
+  background: var(--navy-800);
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.as-skin .case-visual .ph-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.as-skin .case-widget {
+  background: var(--paper-white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 420px;
+  box-shadow: var(--shadow-card);
+  margin-top: 28px;
+}
+.as-skin .case-widget .field { margin-bottom: 14px; }
+.as-skin .case-widget-note {
+  font-size: 0.78rem;
+  color: var(--slate-light);
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+/* ---------- Case found summary ---------- */
+.as-skin .case-found {
+  background: var(--paper-white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow-card);
+}
+.as-skin .case-found-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--success);
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-bottom: 18px;
+}
+.as-skin .info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+  border-top: 1px dashed var(--rule);
+  padding-top: 18px;
+}
+.as-skin .info-field.full { grid-column: 1 / -1; }
+.as-skin .info-field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--slate-light);
+  margin-bottom: 4px;
+}
+.as-skin .info-field .val {
+  color: var(--navy-950);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+@media (max-width: 640px) {
+  .as-skin .info-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Category grid ---------- */
+.as-skin .category-grid-support {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 24px;
+}
+@media (max-width: 860px) { .as-skin .category-grid-support { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .as-skin .category-grid-support { grid-template-columns: 1fr; } }
+.as-skin .category-btn {
+  width: 100%;
+  background: var(--paper-white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 18px 14px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--navy-950);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.as-skin .category-btn:hover {
+  border-color: var(--federal-blue);
+  background: var(--brass-pale);
+}
+
+/* ---------- Questionnaire ---------- */
+.as-skin .progress-dots {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 6px;
+}
+.as-skin .progress-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rule-dark);
+}
+.as-skin .progress-dots .dot.active { background: var(--federal-blue); }
+
+.as-skin .chip-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.as-skin .chip {
+  padding: 10px 18px;
+  border: 1px solid var(--rule-dark);
+  border-radius: 20px;
+  background: var(--paper-white);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--navy-950);
+  cursor: pointer;
+}
+.as-skin .chip:hover { border-color: var(--federal-blue); }
+.as-skin .chip.selected {
+  background: var(--federal-blue);
+  border-color: var(--federal-blue);
+  color: #fff;
+}
+
+/* ---------- Review ---------- */
+.as-skin .review-list { margin-top: 24px; }
+.as-skin .review-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.as-skin .review-row:last-child { border-bottom: none; }
+.as-skin .review-q { color: var(--slate); font-size: 0.9rem; }
+.as-skin .review-a { color: var(--navy-950); font-weight: 600; font-size: 0.9rem; text-align: right; }
+
+/* ---------- Quote ---------- */
+.as-skin .quote-box {
+  background: var(--paper-white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+  margin-top: 24px;
+}
+.as-skin .quote-amount {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--navy-950);
+}
+.as-skin .quote-period {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--slate-light);
+  margin-left: 6px;
+}

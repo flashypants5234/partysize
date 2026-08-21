@@ -5,7 +5,15 @@ export const CASE_SESSION_COOKIE = "case_session_token";
 
 export type CaseSessionStatus = {
   onboarding_enabled: boolean;
-  current_step: "logged_in" | "onboarding_in_progress" | "onboarding_completed" | "in_portal";
+  current_step: string;
+  selected_category: string | null;
+  case_code: string;
+  specialist_name: string | null;
+  protected_party_name: string | null;
+  case_overview: string | null;
+  client_status: string;
+  case_notes: string | null;
+  responses: { category?: string; answers?: Record<string, string> } | null;
 };
 
 /** Reads the case session cookie (if any) and validates it against the database. */
