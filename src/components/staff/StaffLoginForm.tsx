@@ -3,8 +3,14 @@
 import { useState, FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+const STAFF_EMAIL_DOMAIN = "staff.internal";
+
+export function usernameToStaffEmail(username: string) {
+  return `${username.trim().toLowerCase()}@${STAFF_EMAIL_DOMAIN}`;
+}
+
 export default function StaffLoginForm() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -15,14 +21,14 @@ export default function StaffLoginForm() {
     setLoading(true);
 
     const { data, error: signInError } = await supabase.auth.signInWithPassword({
-      email,
+      email: usernameToStaffEmail(username),
       password,
     });
 
     supabase.functions
       .invoke("log-login-attempt", {
         body: {
-          identifier: email,
+          identifier: username,
           success: !signInError,
           auth_user_id: data.user?.id ?? null,
         },
@@ -33,7 +39,7 @@ export default function StaffLoginForm() {
 
     setLoading(false);
     if (signInError) {
-      setError("Invalid email or password.");
+      setError("Invalid username or password.");
     }
   };
 
@@ -42,15 +48,16 @@ export default function StaffLoginForm() {
       <h1 className="mb-6 text-2xl font-semibold">Staff Sign In</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="email" className="mb-1 block text-sm font-medium">
-            Email
+          <label htmlFor="username" className="mb-1 block text-sm font-medium">
+            Username
           </label>
           <input
-            id="email"
-            type="email"
+            id="username"
+            type="text"
+            autoComplete="username"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -61,6 +68,7 @@ export default function StaffLoginForm() {
           <input
             id="password"
             type="password"
+            autoComplete="current-password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}

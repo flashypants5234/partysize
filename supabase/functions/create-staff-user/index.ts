@@ -6,6 +6,8 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+const STAFF_EMAIL_DOMAIN = 'staff.internal'
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -55,17 +57,20 @@ serve(async (req) => {
     })
   }
 
-  const { email, password, role, display_name } = await req.json()
+  const { username, password, role, display_name } = await req.json()
 
-  if (!email || !password || !role || !['admin', 'worker'].includes(role)) {
+  if (!username || !password || !role || !['admin', 'worker'].includes(role)) {
     return new Response(JSON.stringify({ error: 'Invalid input' }), {
       status: 400,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   }
 
+  const normalizedUsername = String(username).trim().toLowerCase()
+  const syntheticEmail = `${normalizedUsername}@${STAFF_EMAIL_DOMAIN}`
+
   const { data: newUser, error: createError } = await admin.auth.admin.createUser({
-    email,
+    email: syntheticEmail,
     password,
     email_confirm: true,
   })
@@ -81,7 +86,7 @@ serve(async (req) => {
   const { error: profileError } = await admin.from('staff_profiles').insert({
     auth_user_id: newUser.user.id,
     role,
-    display_name: display_name ?? null,
+    display_name: display_name ?? normalizedUsername,
     created_by: callerProfile.id,
   })
 

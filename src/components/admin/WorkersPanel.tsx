@@ -6,7 +6,7 @@ import type { WorkerRow } from "@/types/staff";
 
 export default function WorkersPanel() {
   const [workers, setWorkers] = useState<WorkerRow[]>([]);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState<"worker" | "admin">("worker");
@@ -33,7 +33,7 @@ export default function WorkersPanel() {
     setLoading(true);
     const { data: sessionData } = await supabase.auth.getSession();
     const { error: fnError } = await supabase.functions.invoke("create-staff-user", {
-      body: { email, password, role, display_name: displayName || null },
+      body: { username, password, role, display_name: displayName || null },
       headers: { Authorization: `Bearer ${sessionData.session?.access_token}` },
     });
     setLoading(false);
@@ -41,8 +41,8 @@ export default function WorkersPanel() {
       setError(fnError.message);
       return;
     }
-    setSuccess(`Login created for ${email}.`);
-    setEmail("");
+    setSuccess(`Login created for ${username}.`);
+    setUsername("");
     setPassword("");
     setDisplayName("");
     load();
@@ -63,11 +63,11 @@ export default function WorkersPanel() {
       <form onSubmit={handleCreate} className="grid gap-3 rounded-lg border border-gray-200 p-4 sm:grid-cols-2">
         <h3 className="font-semibold sm:col-span-2">Issue New Staff Login</h3>
         <input
-          type="email"
+          type="text"
           required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
           className="rounded-md border border-gray-300 px-3 py-2 text-sm"
         />
         <input
