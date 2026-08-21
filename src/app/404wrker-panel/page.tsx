@@ -3,7 +3,6 @@
 import { useStaffSession } from "@/hooks/useStaffSession";
 import StaffLoginForm from "@/components/staff/StaffLoginForm";
 import NotAuthorized from "@/components/staff/NotAuthorized";
-import WrongPanel from "@/components/staff/WrongPanel";
 import WorkerDashboard from "@/components/worker/WorkerDashboard";
 
 export default function WorkerPanelPage() {
@@ -17,13 +16,9 @@ export default function WorkerPanelPage() {
     return <StaffLoginForm />;
   }
 
-  if (role === "admin") {
-    return <WrongPanel requiredRole="worker" />;
-  }
-
-  if (role !== "worker" || !staffId) {
+  if ((role !== "worker" && role !== "admin") || !staffId) {
     return <NotAuthorized />;
   }
 
-  return <WorkerDashboard staffId={staffId} />;
+  return <WorkerDashboard staffId={staffId} isAdmin={role === "admin"} />;
 }

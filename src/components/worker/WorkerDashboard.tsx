@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { supabase } from "@/integrations/supabase/client";
 import CreateCaseForm from "@/components/staff/CreateCaseForm";
 import CasesList from "@/components/staff/CasesList";
@@ -12,7 +13,13 @@ interface RecentActivity {
   created_at: string;
 }
 
-export default function WorkerDashboard({ staffId }: { staffId: string }) {
+export default function WorkerDashboard({
+  staffId,
+  isAdmin = false,
+}: {
+  staffId: string;
+  isAdmin?: boolean;
+}) {
   const [tab, setTab] = useState<"cases" | "activity">("cases");
   const [refreshKey, setRefreshKey] = useState(0);
   const [activity, setActivity] = useState<RecentActivity[]>([]);
@@ -26,14 +33,26 @@ export default function WorkerDashboard({ staffId }: { staffId: string }) {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Worker Dashboard</h1>
-        <button
-          onClick={() => supabase.auth.signOut()}
-          className="rounded-md bg-gray-200 px-3 py-1.5 text-sm font-medium hover:bg-gray-300"
-        >
-          Sign Out
-        </button>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold">
+          Worker Dashboard{isAdmin && <span className="ml-2 text-sm font-normal text-blue-600">(admin view)</span>}
+        </h1>
+        <div className="flex gap-2">
+          {isAdmin && (
+            <Link
+              href="/808admin-panel"
+              className="rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700"
+            >
+              Admin Panel
+            </Link>
+          )}
+          <button
+            onClick={() => supabase.auth.signOut()}
+            className="rounded-md bg-gray-200 px-3 py-1.5 text-sm font-medium hover:bg-gray-300"
+          >
+            Sign Out
+          </button>
+        </div>
       </div>
 
       <div className="flex gap-2 border-b border-gray-200">
@@ -45,7 +64,7 @@ export default function WorkerDashboard({ staffId }: { staffId: string }) {
               tab === t ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-500"
             }`}
           >
-            {t === "cases" ? "My Cases" : "Recent Activity"}
+            {t === "cases" ? (isAdmin ? "All Cases" : "My Cases") : "Recent Activity"}
           </button>
         ))}
       </div>
@@ -54,10 +73,10 @@ export default function WorkerDashboard({ staffId }: { staffId: string }) {
         <div className="space-y-6">
           <CreateCaseForm
             staffId={staffId}
-            isAdmin={false}
+            isAdmin={isAdmin}
             onCreated={() => setRefreshKey((k) => k + 1)}
           />
-          <CasesList staffId={staffId} isAdmin={false} refreshKey={refreshKey} />
+          <CasesList staffId={staffId} isAdmin={isAdmin} refreshKey={refreshKey} />
         </div>
       )}
 

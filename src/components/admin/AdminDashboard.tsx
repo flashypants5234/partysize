@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { supabase } from "@/integrations/supabase/client";
 import CreateCaseForm from "@/components/staff/CreateCaseForm";
 import CasesList from "@/components/staff/CasesList";
@@ -29,14 +30,22 @@ export default function AdminDashboard({ staffId }: { staffId: string }) {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
-        <button
-          onClick={() => supabase.auth.signOut()}
-          className="rounded-md bg-gray-200 px-3 py-1.5 text-sm font-medium hover:bg-gray-300"
-        >
-          Sign Out
-        </button>
+        <div className="flex gap-2">
+          <Link
+            href="/404wrker-panel"
+            className="rounded-md bg-gray-800 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-900"
+          >
+            Worker Panel
+          </Link>
+          <button
+            onClick={() => supabase.auth.signOut()}
+            className="rounded-md bg-gray-200 px-3 py-1.5 text-sm font-medium hover:bg-gray-300"
+          >
+            Sign Out
+          </button>
+        </div>
       </div>
 
       <QuoteRequestsBanner staffId={staffId} />
