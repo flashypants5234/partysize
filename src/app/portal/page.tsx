@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getCaseSession } from "@/lib/case-session";
 import { CATEGORIES } from "@/data/coverage-categories";
 import { chooseCategory, logOutCaseSession } from "./actions";
+import "@/styles/category-buttons.css";
 
 export default async function PortalPage() {
   const session = await getCaseSession();
