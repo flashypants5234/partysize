@@ -1,73 +1,157 @@
 import Link from "next/link";
-import { ShieldCheck, Lock, Coins } from "lucide-react";
+import { ShieldCheck, Smartphone, ClipboardCheck, Coins, Lock, ChevronRight } from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
+import HowItWorks from "@/components/HowItWorks";
+
+const features = [
+  {
+    icon: ClipboardCheck,
+    title: "Case Tracking",
+    body: "Follow your case status from intake to coverage, all in one place.",
+    accent: "border-sky-400",
+  },
+  {
+    icon: Smartphone,
+    title: "Digital-First Support",
+    body: "Reach our team and manage updates without ever picking up the phone.",
+    accent: "border-accent-500",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Coverage Access",
+    body: "Review your coverage terms and documents whenever you need them.",
+    accent: "border-navy-900",
+  },
+];
+
+const coverageTypes = [
+  { icon: Coins, title: "Cryptocurrency Coverage", live: true, href: "/coverage/crypto" },
+  { icon: ShieldCheck, title: "Property & Auto", live: false },
+  { icon: Lock, title: "Valuable Personal Property", live: false },
+  { icon: ShieldCheck, title: "Business Assets", live: false },
+];
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-white">
-      <header className="bg-navy-900 text-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-          <div className="flex items-center gap-2 font-semibold tracking-tight">
-            <ShieldCheck className="h-6 w-6 text-accent-500" aria-hidden />
-            <span>American Shield</span>
-          </div>
-          <Link
-            href="/access"
-            className="rounded-md bg-accent-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-600"
-          >
-            Beta Access
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
+      {/* Hero */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-        <p className="text-xs font-semibold uppercase tracking-widest text-accent-600">
-          American-First Asset Protection — Demo Platform
-        </p>
-        <h1 className="mt-4 max-w-3xl text-3xl font-bold tracking-tight text-navy-900 sm:text-5xl">
-          Protecting what you&apos;ve built, backed by American standards.
-        </h1>
-        <p className="mt-4 max-w-2xl text-base text-slate-600 sm:text-lg">
-          We&apos;re building a modern asset-insurance platform starting with cryptocurrency
-          coverage. This is a beta preview — all figures and claims on this site are
-          placeholder/demo content.
-        </p>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Link
-            href="/access"
-            className="rounded-md bg-navy-900 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-navy-800"
-          >
-            I have a Case ID — Enter Beta
-          </Link>
-        </div>
-
-        <div className="mt-16 grid gap-4 sm:grid-cols-3">
-          <div className="rounded-lg border border-slate-200 p-5">
-            <Coins className="h-6 w-6 text-accent-500" aria-hidden />
-            <h2 className="mt-3 font-semibold text-navy-900">Cryptocurrency Coverage</h2>
-            <p className="mt-1 text-sm text-slate-600">
-              Our flagship product, launching first in beta. Placeholder coverage tiers and
-              sample rates.
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent-600">
+              American-First Asset Protection
             </p>
+            <h1 className="mt-4 text-4xl font-bold tracking-tight text-navy-900 sm:text-5xl">
+              Protecting what you&apos;ve built, backed by American standards.
+            </h1>
+            <p className="mt-4 max-w-md text-base text-slate-600 sm:text-lg">
+              Log in to manage your case, or continue with the Case ID our team provided you.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <button
+                type="button"
+                className="rounded-md bg-accent-500 px-8 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-accent-600"
+              >
+                Log In
+              </button>
+              <Link
+                href="/access"
+                className="rounded-md border-2 border-navy-900 px-8 py-3 text-center text-sm font-semibold text-navy-900 transition hover:bg-navy-900 hover:text-white"
+              >
+                Have an existing case with us?
+              </Link>
+            </div>
           </div>
-          <div className="rounded-lg border border-slate-200 p-5 opacity-60">
-            <ShieldCheck className="h-6 w-6 text-slate-400" aria-hidden />
-            <h2 className="mt-3 font-semibold text-navy-900">Savings &amp; Property</h2>
-            <p className="mt-1 text-sm text-slate-600">Coming soon.</p>
-          </div>
-          <div className="rounded-lg border border-slate-200 p-5 opacity-60">
-            <Lock className="h-6 w-6 text-slate-400" aria-hidden />
-            <h2 className="mt-3 font-semibold text-navy-900">Valuable Personal Property</h2>
-            <p className="mt-1 text-sm text-slate-600">Coming soon.</p>
+
+          <div className="relative mx-auto hidden max-w-xs lg:block">
+            <div className="absolute inset-0 -z-10 scale-125 rounded-full bg-accent-100" />
+            <div className="overflow-hidden rounded-[2rem] border-[6px] border-navy-900 bg-white shadow-2xl">
+              <div className="bg-navy-900 px-4 py-3 text-center text-xs font-bold tracking-widest text-white">
+                AMERICAN SHIELD
+              </div>
+              <div className="space-y-3 p-5">
+                <p className="text-sm font-semibold text-navy-900">Welcome back</p>
+                <div className="h-9 rounded-md border border-slate-300 bg-slate-50" />
+                <div className="h-9 rounded-md border border-slate-300 bg-slate-50" />
+                <div className="h-9 rounded-md bg-accent-500" />
+                <p className="text-center text-xs font-medium text-accent-600">
+                  Have a Case ID? Continue
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <footer className="bg-navy-900 py-8 text-center text-xs text-slate-400">
-        <p>
-          Demo platform for illustration only. Not a government agency, not affiliated with the
-          FDIC, and no real coverage is provided.
-        </p>
-      </footer>
+      {/* Feature strip */}
+      <section id="resources" className="bg-slate-50 py-16">
+        <div className="mx-auto max-w-6xl px-4 text-center sm:px-6">
+          <h2 className="text-2xl font-semibold text-navy-900 sm:text-3xl">
+            Even more within reach
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-600 sm:text-base">
+            From your case status to your coverage documents, everything you need is designed to
+            be simple to find and easy to trust.
+          </p>
+
+          <div className="mt-12 grid gap-8 sm:grid-cols-3">
+            {features.map((f) => (
+              <div key={f.title} className={`border-t-4 border-b-4 ${f.accent} px-4 py-8`}>
+                <f.icon className="mx-auto h-8 w-8 text-navy-900" aria-hidden />
+                <h3 className="mt-4 text-lg font-bold text-navy-900">{f.title}</h3>
+                <p className="mt-2 text-sm text-slate-600">{f.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <HowItWorks />
+
+      {/* Coverage */}
+      <section id="coverage" className="bg-slate-50 py-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <h2 className="text-center text-2xl font-semibold text-navy-900 sm:text-3xl">
+            Featured Coverage
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-slate-600 sm:text-base">
+            Cryptocurrency coverage is available now, with more asset types on the way.
+          </p>
+
+          <div className="mx-auto mt-10 grid max-w-2xl gap-x-10 gap-y-4 sm:grid-cols-2">
+            {coverageTypes.map((c) => (
+              <div
+                key={c.title}
+                className={`flex items-center justify-between rounded-md border border-slate-200 bg-white px-5 py-4 ${
+                  !c.live ? "opacity-60" : ""
+                }`}
+              >
+                <span className="flex items-center gap-3 font-semibold text-navy-900">
+                  <c.icon className="h-5 w-5 text-accent-500" aria-hidden />
+                  {c.title}
+                </span>
+                {c.live ? (
+                  <Link href={c.href!} className="text-accent-600">
+                    <ChevronRight className="h-5 w-5" aria-hidden />
+                  </Link>
+                ) : (
+                  <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                    Soon
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="about" />
+
+      <SiteFooter />
     </main>
   );
 }
