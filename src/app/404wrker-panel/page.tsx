@@ -36,16 +36,17 @@ export default async function WorkerPanelPage({
             )}
             <form action={loginWorkerPanel} className="form-card">
               <div className="field">
-                <label htmlFor="email">Email</label>
-                <input id="email" name="email" type="email" required />
+                <label htmlFor="email">Username</label>
+                <input id="email" name="email" type="text" required placeholder="worker" />
               </div>
               <div className="field">
                 <label htmlFor="password">Password</label>
-                <input id="password" name="password" type="password" required />
+                <input id="password" name="password" type="password" required placeholder="temp" />
               </div>
               <button type="submit" className="btn btn-primary btn-block">
                 Sign In
               </button>
+              <p className="form-note">Dev login: worker / temp</p>
             </form>
           </div>
         </section>

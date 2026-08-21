@@ -6,8 +6,13 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const PANEL_PATH = "/404wrker-panel";
 
+function toDevEmail(identifier: string) {
+  return identifier.includes("@") ? identifier : `${identifier}@local.test`;
+}
+
 export async function loginWorkerPanel(formData: FormData) {
-  const email = String(formData.get("email") ?? "").trim();
+  const identifier = String(formData.get("email") ?? "").trim();
+  const email = toDevEmail(identifier);
   const password = String(formData.get("password") ?? "");
   const supabase = await createSupabaseServerClient();
 
