@@ -35,8 +35,17 @@ export default function WelcomePage() {
                             style={{
                                 marginTop: 30
                             }}>
-                            <Link href="/access" className="btn btn-brass">Continue to My Case
-                                              </Link>
+                            <Link href="/access" className="btn btn-brass btn-continue">Continue to My Case
+                                <svg
+                                    className="btn-arrow"
+                                    viewBox="0 0 16 16"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true">
+                                    <path d="M2 8 H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+                                    <path d="M9.5 4 L13.5 8 L9.5 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" />
+                                </svg>
+                            </Link>
                         </div>
                     </div>
                     <div className="case-visual case-visual-photo">
