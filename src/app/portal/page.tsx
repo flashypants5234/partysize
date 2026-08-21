@@ -5,6 +5,7 @@ import { getCaseSession } from "@/lib/case-session";
 import { CATEGORIES } from "@/data/coverage-categories";
 import { chooseCategory, logOutCaseSession } from "./actions";
 import CategoryIcon from "@/components/CategoryIcon";
+import GovStrip from "@/components/GovStrip";
 import TrackPage from "@/components/portal/TrackPage";
 import "@/styles/category-buttons.css";
 
@@ -18,6 +19,7 @@ export default async function PortalPage() {
   return (
     <div className="as-skin">
       <TrackPage path="/portal" />
+      <GovStrip />
       <header className="site-header">
         <div className="header-inner">
           <Link href="/" className="brand link-plain">

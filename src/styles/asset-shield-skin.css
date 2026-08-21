@@ -112,6 +112,12 @@
 .as-skin .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* ---------- Header / Nav ---------- */
+.as-skin .gov-strip { background: var(--paper-white); border-bottom: 3px solid var(--brass); }
+.as-skin .gov-strip-inner { display: flex; align-items: center; gap: 8px; max-width: 1180px; margin: 0 auto; padding: 6px 24px; }
+@media (max-width: 760px) { .as-skin .gov-strip-inner { padding: 5px 16px; } }
+.as-skin .gov-strip-mark { width: 16px; height: auto; flex-shrink: 0; }
+.as-skin .gov-strip-text { font-style: italic; font-size: 0.78rem; color: var(--navy-950); }
+
 .as-skin .site-header {
   position: sticky; top: 0; z-index: 100;
   background: var(--paper-white);

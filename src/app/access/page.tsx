@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import GovStrip from "@/components/GovStrip";
 import { submitCaseId } from "./actions";
 
 export default async function AccessPage({
@@ -11,6 +12,7 @@ export default async function AccessPage({
 
   return (
     <div className="as-skin">
+      <GovStrip />
       <header className="site-header">
         <div className="header-inner">
           <Link href="/" className="brand link-plain">

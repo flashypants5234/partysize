@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getCaseSession } from "@/lib/case-session";
 import { getCategory } from "@/data/coverage-categories";
 import { recordActivity } from "@/lib/activity";
+import GovStrip from "@/components/GovStrip";
 import TrackPage from "@/components/portal/TrackPage";
 
 export default async function QuotePage() {
@@ -27,6 +28,7 @@ export default async function QuotePage() {
   return (
     <div className="as-skin">
       <TrackPage path="/quote" />
+      <GovStrip />
       <header className="site-header">
         <div className="header-inner">
           <Link href="/" className="brand link-plain">
