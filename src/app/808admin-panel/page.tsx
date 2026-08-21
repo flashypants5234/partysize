@@ -13,7 +13,7 @@ export default function AdminPanelPage() {
 
   useEffect(() => {
     if (!loading && role === "worker") {
-      router.replace("/worker-dashboard");
+      router.replace("/404wrker-panel");
     }
   }, [loading, role, router]);
 
