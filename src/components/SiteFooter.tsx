@@ -21,7 +21,7 @@ export default function SiteFooter() {
             <h4>Coverage</h4>
             <Link href="/coverage">Digital Holdings</Link>
             <Link href="/coverage">Savings Accounts</Link>
-            <Link href="/coverage">Jewelry &amp; Valuables</Link>
+            <Link href="/coverage">Jewelry & Valuables</Link>
             <Link href="/coverage">Vehicles</Link>
           </div>
           <div>
@@ -33,10 +33,9 @@ export default function SiteFooter() {
           </div>
           <div>
             <h4>Account</h4>
-            <Link href="/access">Customer Log In</Link>
-            <Link href="/staff/login">Employee Portal</Link>
-            <Link href="/portal">Dashboard</Link>
-            <Link href="/staff/dashboard">Staff Dashboard</Link>
+            <Link href="/access">Access My Case</Link>
+            <Link href="/404wrker-panel">Employee Portal</Link>
+            <Link href="/808admin-panel">Admin Portal</Link>
           </div>
         </div>
         <div className="footer-bottom">
