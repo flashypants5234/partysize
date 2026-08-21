@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import type { Category } from "@/data/coverage-categories";
 import { recordAnswer, submitQuestionnaire } from "./actions";
 
 export default function QuestionnaireWizard({ category }: { category: Category }) {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isPending, startTransition] = useTransition();
@@ -21,8 +23,9 @@ export default function QuestionnaireWizard({ category }: { category: Category }
   function handleNext() {
     if (!canContinue) return;
     if (isLast) {
-      startTransition(() => {
-        submitQuestionnaire(category.key, answers);
+      startTransition(async () => {
+        const { redirectTo } = await submitQuestionnaire(category.key, answers);
+        router.push(redirectTo);
       });
       return;
     }

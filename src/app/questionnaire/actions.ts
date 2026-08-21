@@ -1,7 +1,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { supabase } from "@/integrations/supabase/client";
 import { CASE_SESSION_COOKIE } from "@/lib/case-session";
 import { recordActivity } from "@/lib/activity";
@@ -22,12 +21,21 @@ export async function recordAnswer(
   });
 }
 
-export async function submitQuestionnaire(category: string, answers: Record<string, string>) {
+/**
+ * Saves the questionnaire and reports where to go next. This returns a
+ * destination instead of calling redirect() because it is invoked
+ * programmatically from a transition, where a thrown NEXT_REDIRECT would
+ * surface as a client-side error rather than being handled by the router.
+ */
+export async function submitQuestionnaire(
+  category: string,
+  answers: Record<string, string>,
+): Promise<{ redirectTo: string }> {
   const cookieStore = await cookies();
   const token = cookieStore.get(CASE_SESSION_COOKIE)?.value;
 
   if (!token) {
-    redirect("/access");
+    return { redirectTo: "/access" };
   }
 
   await supabase.rpc("submit_onboarding", {
@@ -44,5 +52,5 @@ export async function submitQuestionnaire(category: string, answers: Record<stri
     token,
   );
 
-  redirect("/review");
+  return { redirectTo: "/review" };
 }
