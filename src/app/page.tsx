@@ -41,10 +41,10 @@ export default function WelcomePage() {
                     </div>
                     <div className="case-visual case-visual-photo">
                         <Image
-                            src="/assets/hero-photo.png"
-                            alt="FDIC brass nameplate on a desk with a pen and notepad"
-                            width={277}
-                            height={141}
+                            src="/assets/hero-photo.jpg"
+                            alt="FDIC document folder with gold embossing on a wooden desk"
+                            width={1038}
+                            height={550}
                             className="case-visual-img"
                         />
                     </div>
