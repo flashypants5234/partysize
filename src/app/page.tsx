@@ -35,7 +35,7 @@ export default function WelcomePage() {
                             style={{
                                 marginTop: 30
                             }}>
-                            <Link href="/access" className="btn btn-brass btn-continue">Continue to My Case
+                            <Link href="/access" className="btn btn-brass btn-brass-white btn-continue">Continue to My Case
                                                                 <svg
                                     className="btn-arrow"
                                     viewBox="0 0 16 16"
