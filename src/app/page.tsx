@@ -1,157 +1,121 @@
 import Link from "next/link";
-import { ShieldCheck, Smartphone, ClipboardCheck, Coins, Lock, ChevronRight } from "lucide-react";
+import { ShieldCheck, Zap, FileCheck, ArrowRight } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import HowItWorks from "@/components/HowItWorks";
 
 const features = [
   {
-    icon: ClipboardCheck,
-    title: "Case Tracking",
-    body: "Follow your case status from intake to coverage, all in one place.",
-    accent: "border-sky-400",
-  },
-  {
-    icon: Smartphone,
-    title: "Digital-First Support",
-    body: "Reach our team and manage updates without ever picking up the phone.",
-    accent: "border-accent-500",
-  },
-  {
     icon: ShieldCheck,
-    title: "Coverage Access",
-    body: "Review your coverage terms and documents whenever you need them.",
-    accent: "border-navy-900",
+    title: "Comprehensive Protection",
+    description: "Coverage designed around the real value of what you own, not just its replacement cost.",
+  },
+  {
+    icon: Zap,
+    title: "Fast Response",
+    description: "Claims are reviewed quickly with clear updates at every step of the process.",
+  },
+  {
+    icon: FileCheck,
+    title: "Transparent Terms",
+    description: "No hidden fees or fine print surprises — every policy is written in plain language.",
   },
 ];
 
 const coverageTypes = [
-  { icon: Coins, title: "Cryptocurrency Coverage", live: true, href: "/coverage/crypto" },
-  { icon: ShieldCheck, title: "Property & Auto", live: false },
-  { icon: Lock, title: "Valuable Personal Property", live: false },
-  { icon: ShieldCheck, title: "Business Assets", live: false },
+  { title: "Property Coverage", description: "Protection for your home and physical assets against loss or damage." },
+  { title: "Valuables & Collectibles", description: "Specialized coverage for high-value items that need extra protection." },
+  { title: "Liability Protection", description: "Safeguard your finances against claims and legal costs." },
+  { title: "Business Assets", description: "Coverage built for the equipment and inventory that keep you running." },
 ];
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white">
+    <div className="flex min-h-screen flex-col bg-[#f7f8fa]">
       <SiteHeader />
 
-      {/* Hero */}
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-accent-600">
-              American-First Asset Protection
-            </p>
-            <h1 className="mt-4 text-4xl font-bold tracking-tight text-navy-900 sm:text-5xl">
-              Protecting what you&apos;ve built, backed by American standards.
-            </h1>
-            <p className="mt-4 max-w-md text-base text-slate-600 sm:text-lg">
-              Log in to manage your case, or continue with the Case ID our team provided you.
-            </p>
+      <main className="flex-1">
+        <section className="bg-[#0a1f44] text-white">
+          <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-28">
+            <div>
+              <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+                Protection you can trust, when it matters most.
+              </h1>
+              <p className="mt-6 max-w-xl text-lg text-white/80">
+                American Shield delivers straightforward asset insurance backed by
+                real people and a claims process built for speed and clarity.
+              </p>
+              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                <Link
+                  href="/access"
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-[#c8a04d] px-6 py-3.5 text-base font-semibold text-[#0a1f44] transition-colors hover:bg-[#e0c07a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  Have an existing case with us?
+                  <ArrowRight className="h-5 w-5" aria-hidden="true" />
+                </Link>
+                <Link
+                  href="/coverage"
+                  className="inline-flex items-center justify-center rounded-md border border-white/30 px-6 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  Explore Coverage
+                </Link>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-8">
+              <p className="text-sm uppercase tracking-widest text-[#e0c07a]">Why clients choose us</p>
+              <ul className="mt-6 space-y-4 text-white/85">
+                <li className="flex items-start gap-3">
+                  <ShieldCheck className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#c8a04d]" aria-hidden="true" />
+                  Dedicated case managers for every policyholder
+                </li>
+                <li className="flex items-start gap-3">
+                  <Zap className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#c8a04d]" aria-hidden="true" />
+                  Real-time case status through your secure portal
+                </li>
+                <li className="flex items-start gap-3">
+                  <FileCheck className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#c8a04d]" aria-hidden="true" />
+                  Clear, plain-language policy documents
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <button
-                type="button"
-                className="rounded-md bg-accent-500 px-8 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-accent-600"
-              >
-                Log In
-              </button>
-              <Link
-                href="/access"
-                className="rounded-md border-2 border-navy-900 px-8 py-3 text-center text-sm font-semibold text-navy-900 transition hover:bg-navy-900 hover:text-white"
-              >
-                Have an existing case with us?
+        <section className="bg-white py-16">
+          <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:grid-cols-3 sm:px-6 lg:px-8">
+            {features.map((feature) => (
+              <div key={feature.title} className="rounded-xl border border-slate-200 p-6">
+                <feature.icon className="h-8 w-8 text-[#0a1f44]" aria-hidden="true" />
+                <h3 className="mt-4 text-lg font-semibold text-[#0a1f44]">{feature.title}</h3>
+                <p className="mt-2 text-sm text-slate-600">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <HowItWorks />
+
+        <section className="bg-[#f7f8fa] py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className="text-2xl font-bold text-[#0a1f44] sm:text-3xl">Featured Coverage</h2>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {coverageTypes.map((item) => (
+                <div key={item.title} className="rounded-xl border border-slate-200 bg-white p-6">
+                  <h3 className="font-semibold text-[#0a1f44]">{item.title}</h3>
+                  <p className="mt-2 text-sm text-slate-600">{item.description}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-8">
+              <Link href="/coverage" className="inline-flex items-center gap-2 font-semibold text-[#0a1f44] hover:text-[#c8a04d]">
+                View all coverage options <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
           </div>
-
-          <div className="relative mx-auto hidden max-w-xs lg:block">
-            <div className="absolute inset-0 -z-10 scale-125 rounded-full bg-accent-100" />
-            <div className="overflow-hidden rounded-[2rem] border-[6px] border-navy-900 bg-white shadow-2xl">
-              <div className="bg-navy-900 px-4 py-3 text-center text-xs font-bold tracking-widest text-white">
-                AMERICAN SHIELD
-              </div>
-              <div className="space-y-3 p-5">
-                <p className="text-sm font-semibold text-navy-900">Welcome back</p>
-                <div className="h-9 rounded-md border border-slate-300 bg-slate-50" />
-                <div className="h-9 rounded-md border border-slate-300 bg-slate-50" />
-                <div className="h-9 rounded-md bg-accent-500" />
-                <p className="text-center text-xs font-medium text-accent-600">
-                  Have a Case ID? Continue
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Feature strip */}
-      <section id="resources" className="bg-slate-50 py-16">
-        <div className="mx-auto max-w-6xl px-4 text-center sm:px-6">
-          <h2 className="text-2xl font-semibold text-navy-900 sm:text-3xl">
-            Even more within reach
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-600 sm:text-base">
-            From your case status to your coverage documents, everything you need is designed to
-            be simple to find and easy to trust.
-          </p>
-
-          <div className="mt-12 grid gap-8 sm:grid-cols-3">
-            {features.map((f) => (
-              <div key={f.title} className={`border-t-4 border-b-4 ${f.accent} px-4 py-8`}>
-                <f.icon className="mx-auto h-8 w-8 text-navy-900" aria-hidden />
-                <h3 className="mt-4 text-lg font-bold text-navy-900">{f.title}</h3>
-                <p className="mt-2 text-sm text-slate-600">{f.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <HowItWorks />
-
-      {/* Coverage */}
-      <section id="coverage" className="bg-slate-50 py-16">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="text-center text-2xl font-semibold text-navy-900 sm:text-3xl">
-            Featured Coverage
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-slate-600 sm:text-base">
-            Cryptocurrency coverage is available now, with more asset types on the way.
-          </p>
-
-          <div className="mx-auto mt-10 grid max-w-2xl gap-x-10 gap-y-4 sm:grid-cols-2">
-            {coverageTypes.map((c) => (
-              <div
-                key={c.title}
-                className={`flex items-center justify-between rounded-md border border-slate-200 bg-white px-5 py-4 ${
-                  !c.live ? "opacity-60" : ""
-                }`}
-              >
-                <span className="flex items-center gap-3 font-semibold text-navy-900">
-                  <c.icon className="h-5 w-5 text-accent-500" aria-hidden />
-                  {c.title}
-                </span>
-                {c.live ? (
-                  <Link href={c.href!} className="text-accent-600">
-                    <ChevronRight className="h-5 w-5" aria-hidden />
-                  </Link>
-                ) : (
-                  <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                    Soon
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="about" />
+        </section>
+      </main>
 
       <SiteFooter />
-    </main>
+    </div>
   );
 }
