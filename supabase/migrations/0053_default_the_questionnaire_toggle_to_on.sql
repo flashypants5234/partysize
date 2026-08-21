@@ -1,0 +1,1 @@
+ALTER TABLE public.case_ids ALTER COLUMN onboarding_enabled SET DEFAULT true;

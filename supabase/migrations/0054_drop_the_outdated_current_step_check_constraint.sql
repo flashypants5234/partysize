@@ -1,0 +1,1 @@
+ALTER TABLE public.case_sessions DROP CONSTRAINT IF EXISTS case_sessions_current_step_check;

@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.get_case_session(uuid) TO anon, authenticated, service_role;

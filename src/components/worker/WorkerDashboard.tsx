@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/integrations/supabase/client";
 import CreateCaseForm from "@/components/staff/CreateCaseForm";
-import CasesList from "@/components/staff/CasesList";
+import WorkerCasesTable from "@/components/staff/WorkerCasesTable";
 
 interface RecentActivity {
   code: string;
@@ -76,7 +76,7 @@ export default function WorkerDashboard({
             isAdmin={isAdmin}
             onCreated={() => setRefreshKey((k) => k + 1)}
           />
-          <CasesList staffId={staffId} isAdmin={isAdmin} refreshKey={refreshKey} />
+          <WorkerCasesTable staffId={staffId} isAdmin={isAdmin} refreshKey={refreshKey} />
         </div>
       )}
 

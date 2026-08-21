@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS case_activity_events_case_created_idx ON public.case_activity_events (case_id, created_at DESC);

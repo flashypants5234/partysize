@@ -1,0 +1,1 @@
+GRANT SELECT ON TABLE public.case_activity_events TO authenticated;

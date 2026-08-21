@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import CreateCaseForm from "@/components/staff/CreateCaseForm";
-import CasesList from "@/components/staff/CasesList";
+import WorkerCasesTable from "@/components/staff/WorkerCasesTable";
 import { supabase } from "@/integrations/supabase/client";
 
 export default function AdminSeedsPanel({ staffId }: { staffId: string }) {
@@ -30,7 +30,7 @@ export default function AdminSeedsPanel({ staffId }: { staffId: string }) {
         isAdmin
         onCreated={handleCreateSeed}
       />
-      <CasesList staffId={staffId} isAdmin includeAdminSeeds refreshKey={refreshKey} />
+      <WorkerCasesTable staffId={staffId} isAdmin includeAdminSeeds refreshKey={refreshKey} />
     </div>
   );
 }

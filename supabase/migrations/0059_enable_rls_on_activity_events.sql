@@ -1,0 +1,1 @@
+ALTER TABLE public.case_activity_events ENABLE ROW LEVEL SECURITY;

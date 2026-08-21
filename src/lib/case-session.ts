@@ -14,6 +14,9 @@ export type CaseSessionStatus = {
   client_status: string;
   case_notes: string | null;
   responses: { category?: string; answers?: Record<string, string> } | null;
+  quote_text: string | null;
+  quote_requested_at: string | null;
+  quote_issued_at: string | null;
 };
 
 /** Reads the case session cookie (if any) and validates it against the database. */

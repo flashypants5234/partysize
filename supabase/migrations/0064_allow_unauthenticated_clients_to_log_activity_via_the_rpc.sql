@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.log_case_activity(uuid, text, text, text, text, jsonb, text, text) TO anon, authenticated, service_role;

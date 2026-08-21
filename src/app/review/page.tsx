@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCaseSession } from "@/lib/case-session";
 import { getCategory } from "@/data/coverage-categories";
 import { confirmReview } from "./actions";
+import TrackPage from "@/components/portal/TrackPage";
 
 export default async function ReviewPage() {
   const session = await getCaseSession();
@@ -20,6 +21,7 @@ export default async function ReviewPage() {
 
   return (
     <div className="as-skin">
+      <TrackPage path="/review" />
       <main className="case-shell">
         <div className="container" style={{ maxWidth: 640 }}>
           <div className="eyebrow">New Asset Protection Review</div>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/integrations/supabase/client";
 import CreateCaseForm from "@/components/staff/CreateCaseForm";
-import CasesList from "@/components/staff/CasesList";
+import WorkerCasesTable from "@/components/staff/WorkerCasesTable";
 import QuoteRequestsBanner from "./QuoteRequestsBanner";
 import QuotePresetsPanel from "./QuotePresetsPanel";
 import WorkersPanel from "./WorkersPanel";
@@ -71,7 +71,7 @@ export default function AdminDashboard({ staffId }: { staffId: string }) {
             isAdmin
             onCreated={() => setRefreshKey((k) => k + 1)}
           />
-          <CasesList staffId={staffId} isAdmin refreshKey={refreshKey} />
+          <WorkerCasesTable staffId={staffId} isAdmin refreshKey={refreshKey} />
         </div>
       )}
       {tab === "sessions" && <ActiveSessionsPanel />}

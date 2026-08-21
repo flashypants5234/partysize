@@ -66,6 +66,33 @@ export interface OnboardingResponseRow {
   submitted_at: string;
 }
 
+export interface CaseActivityEventRow {
+  id: string;
+  case_id: string;
+  session_id: string | null;
+  event_type: string;
+  page_path: string | null;
+  question_key: string | null;
+  answer_value: string | null;
+  metadata: Record<string, unknown> | null;
+  ip_address: string | null;
+  user_agent: string | null;
+  created_at: string;
+}
+
+export interface CaseSessionRow {
+  id: string;
+  case_id: string;
+  started_at: string;
+  last_activity_at: string;
+  current_step: string;
+  selected_category: string | null;
+  ended_at: string | null;
+  current_page: string | null;
+  last_ip: string | null;
+  last_user_agent: string | null;
+}
+
 // Supabase embeds a foreign-key relation as either an object or a single-item
 // array depending on how the relationship is inferred. This normalizes both.
 export function unwrap<T>(value: T | T[] | null | undefined): T | null {

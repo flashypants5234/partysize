@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCaseSession } from "@/lib/case-session";
 import { getCategory } from "@/data/coverage-categories";
 import QuestionnaireWizard from "./QuestionnaireWizard";
+import TrackPage from "@/components/portal/TrackPage";
 
 export default async function QuestionnairePage() {
   const session = await getCaseSession();
@@ -24,5 +25,10 @@ export default async function QuestionnairePage() {
     redirect("/portal");
   }
 
-  return <QuestionnaireWizard category={category} />;
+  return (
+    <>
+      <TrackPage path="/questionnaire" />
+      <QuestionnaireWizard category={category} />
+    </>
+  );
 }

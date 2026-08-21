@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import type { Category } from "@/data/coverage-categories";
-import { submitQuestionnaire } from "./actions";
+import { recordAnswer, submitQuestionnaire } from "./actions";
 
 export default function QuestionnaireWizard({ category }: { category: Category }) {
   const [step, setStep] = useState(0);
@@ -15,6 +15,7 @@ export default function QuestionnaireWizard({ category }: { category: Category }
 
   function selectOption(value: string) {
     setAnswers((prev) => ({ ...prev, [question.key]: value }));
+    void recordAnswer(category.key, question.key, question.label, value);
   }
 
   function handleNext() {

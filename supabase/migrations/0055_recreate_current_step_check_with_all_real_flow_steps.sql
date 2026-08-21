@@ -1,0 +1,1 @@
+ALTER TABLE public.case_sessions ADD CONSTRAINT case_sessions_current_step_check CHECK (current_step = ANY (ARRAY['logged_in','onboarding_in_progress','onboarding_completed','category_selected','in_portal','review','quote_requested','quote_viewed','completed']));
