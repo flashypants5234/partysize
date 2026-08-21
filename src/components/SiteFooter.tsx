@@ -9,10 +9,10 @@ export default function SiteFooter() {
           <div>
             <div className="brand" style={{ marginBottom: 14 }}>
               <Image
-                src="/assets/brand-logo.png"
+                src="/assets/brand-logo-solid.png"
                 alt="FDIC — Federal Deposit Insurance Corporation"
-                width={2000}
-                height={914}
+                width={1822}
+                height={863}
                 className="brand-logo-footer"
               />
               <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, color: "#fff" }}>

@@ -121,7 +121,7 @@
 @media (max-width: 760px) { .as-skin .header-inner { padding: 12px 16px; } }
 .as-skin .brand { display: flex; align-items: center; gap: 10px; }
 .as-skin .brand-logo { height: 34px; width: auto; flex-shrink: 0; }
-.as-skin .brand-logo-footer { height: 28px; width: auto; flex-shrink: 0; background: var(--paper-white); border-radius: 4px; }
+.as-skin .brand-logo-footer { height: 28px; width: auto; flex-shrink: 0; }
 .as-skin .brand-word { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--navy-950); letter-spacing: -0.01em; }
 .as-skin .brand-word .placeholder-tag { display: block; font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; color: var(--brass); text-transform: uppercase; font-weight: 600; }
 
