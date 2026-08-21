@@ -28,7 +28,7 @@ export default async function ReviewPage() {
           <h1>{category.label}</h1>
           <p className="hero-lede">Please confirm the details below before we issue your quote.</p>
 
-          <div className="review-list">
+          <div className="review-list" data-no-edit>
             {category.questions.map((q) => (
               <div key={q.key} className="review-row">
                 <span className="review-q">{q.label}</span>

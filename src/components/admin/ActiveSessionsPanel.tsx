@@ -44,7 +44,7 @@ export default function ActiveSessionsPanel() {
             <th className="px-4 py-2">Last Active</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200">
+        <tbody className="divide-y divide-gray-200" data-no-edit>
           {rows.map((r) => (
             <tr key={r.id}>
               <td className="px-4 py-2 font-mono">{r.code}</td>

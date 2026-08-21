@@ -84,9 +84,11 @@ export default function ClientActivityPanel({ caseId }: { caseId: string }) {
       <section>
         <h3 className="mb-2 font-semibold">Current Status</h3>
         {!latestSession ? (
-          <p className="text-sm text-gray-500">This client has never logged in.</p>
+          <p className="text-sm text-gray-500" data-no-edit>
+            This client has never logged in.
+          </p>
         ) : (
-          <div className="grid gap-3 rounded-md bg-white p-3 text-sm ring-1 ring-gray-200 sm:grid-cols-2">
+          <div className="grid gap-3 rounded-md bg-white p-3 text-sm ring-1 ring-gray-200 sm:grid-cols-2" data-no-edit>
             <div>
               <p className="text-xs uppercase tracking-wide text-gray-400">Currently on</p>
               <p className="font-mono">{latestSession.current_page ?? "—"}</p>
@@ -127,9 +129,11 @@ export default function ClientActivityPanel({ caseId }: { caseId: string }) {
       <section>
         <h3 className="mb-2 font-semibold">Recorded Answers</h3>
         {answerEvents.length === 0 && responses.length === 0 ? (
-          <p className="text-sm text-gray-500">No answers recorded yet.</p>
+          <p className="text-sm text-gray-500" data-no-edit>
+            No answers recorded yet.
+          </p>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-2" data-no-edit>
             {answerEvents.map((e) => (
               <div
                 key={e.id}
@@ -153,9 +157,11 @@ export default function ClientActivityPanel({ caseId }: { caseId: string }) {
       <section>
         <h3 className="mb-2 font-semibold">Activity Archive</h3>
         {events.length === 0 ? (
-          <p className="text-sm text-gray-500">No activity recorded yet.</p>
+          <p className="text-sm text-gray-500" data-no-edit>
+            No activity recorded yet.
+          </p>
         ) : (
-          <div className="max-h-96 space-y-1.5 overflow-y-auto pr-1">
+          <div className="max-h-96 space-y-1.5 overflow-y-auto pr-1" data-no-edit>
             {events.map((e) => (
               <div
                 key={e.id}
@@ -185,9 +191,11 @@ export default function ClientActivityPanel({ caseId }: { caseId: string }) {
       <section>
         <h3 className="mb-2 font-semibold">Submitted Responses</h3>
         {responses.length === 0 ? (
-          <p className="text-sm text-gray-500">No submissions yet.</p>
+          <p className="text-sm text-gray-500" data-no-edit>
+            No submissions yet.
+          </p>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-2" data-no-edit>
             {responses.map((r) => (
               <div key={r.id} className="rounded-md bg-white p-3 ring-1 ring-gray-200">
                 <p className="mb-1 text-xs text-gray-400">

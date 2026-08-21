@@ -10,9 +10,27 @@ interface HistoryEntry {
   next: string | null;
 }
 
+export interface SiteTextEntry {
+  key: string;
+  value: string;
+  original: string | null;
+  updatedAt: string | null;
+  updatedByName: string | null;
+}
+
+export interface SiteTextHistoryEntry {
+  id: string;
+  oldValue: string | null;
+  newValue: string | null;
+  changedAt: string;
+  changedByName: string | null;
+}
+
 class SiteTextStore {
   private overrides = new Map<string, string>();
   private defaults = new Map<string, string>();
+  private originals = new Map<string, string>();
+  private meta = new Map<string, { updatedAt: string | null; updatedByName: string | null }>();
   private listeners = new Set<Listener>();
   private undoStack: HistoryEntry[] = [];
   private redoStack: HistoryEntry[] = [];
@@ -44,8 +62,53 @@ class SiteTextStore {
     return this.defaults.get(key) ?? "";
   }
 
+  /** Records the original (pre-override) string discovered by the DOM
+   * walker, so the admin panel can show what a key used to say. */
+  registerOriginal(key: string, original: string) {
+    if (!this.originals.has(key)) this.originals.set(key, original);
+  }
+
   getAllKeys() {
     return Array.from(new Set([...this.defaults.keys(), ...this.overrides.keys()])).sort();
+  }
+
+  /** Rows for the admin Site Text management panel. */
+  getEntries(): SiteTextEntry[] {
+    return Array.from(this.overrides.entries())
+      .map(([key, value]) => ({
+        key,
+        value,
+        original: this.originals.get(key) ?? null,
+        updatedAt: this.meta.get(key)?.updatedAt ?? null,
+        updatedByName: this.meta.get(key)?.updatedByName ?? null,
+      }))
+      .sort((a, b) => (a.updatedAt && b.updatedAt ? (a.updatedAt > b.updatedAt ? -1 : 1) : 0));
+  }
+
+  async fetchHistory(key: string): Promise<SiteTextHistoryEntry[]> {
+    const { data } = await supabase
+      .from("site_text_history")
+      .select("id, old_value, new_value, changed_at, staff_profiles(display_name)")
+      .eq("key", key)
+      .order("changed_at", { ascending: false })
+      .limit(20);
+
+    return ((data ?? []) as unknown as Array<{
+      id: string;
+      old_value: string | null;
+      new_value: string | null;
+      changed_at: string;
+      staff_profiles: { display_name: string | null } | { display_name: string | null }[] | null;
+    }>).map((row) => {
+      const author = Array.isArray(row.staff_profiles) ? row.staff_profiles[0] : row.staff_profiles;
+      return {
+        id: row.id,
+        oldValue: row.old_value,
+        newValue: row.new_value,
+        changedAt: row.changed_at,
+        changedByName: author?.display_name ?? null,
+      };
+    });
   }
 
   get(key: string, fallback: string) {
@@ -81,9 +144,18 @@ class SiteTextStore {
     if (this.loaded) return;
     this.loaded = true;
 
-    const { data } = await supabase.from("site_text_overrides").select("key, value");
-    (data ?? []).forEach((row: { key: string; value: string }) => {
+    const { data } = await supabase
+      .from("site_text_overrides")
+      .select("key, value, updated_at, staff_profiles(display_name)");
+    ((data ?? []) as unknown as Array<{
+      key: string;
+      value: string;
+      updated_at: string;
+      staff_profiles: { display_name: string | null } | { display_name: string | null }[] | null;
+    }>).forEach((row) => {
       this.overrides.set(row.key, row.value);
+      const author = Array.isArray(row.staff_profiles) ? row.staff_profiles[0] : row.staff_profiles;
+      this.meta.set(row.key, { updatedAt: row.updated_at, updatedByName: author?.display_name ?? null });
     });
     this.emit();
 
@@ -93,12 +165,18 @@ class SiteTextStore {
         "postgres_changes",
         { event: "*", schema: "public", table: "site_text_overrides" },
         (payload) => {
-          const newRow = payload.new as { key?: string; value?: string } | null;
+          const newRow = payload.new as { key?: string; value?: string; updated_at?: string } | null;
           const oldRow = payload.old as { key?: string } | null;
           if (payload.eventType === "DELETE" && oldRow?.key) {
             this.overrides.delete(oldRow.key);
+            this.meta.delete(oldRow.key);
           } else if (newRow?.key && typeof newRow.value === "string") {
             this.overrides.set(newRow.key, newRow.value);
+            const existing = this.meta.get(newRow.key);
+            this.meta.set(newRow.key, {
+              updatedAt: newRow.updated_at ?? existing?.updatedAt ?? null,
+              updatedByName: existing?.updatedByName ?? null,
+            });
           }
           this.emit();
         }

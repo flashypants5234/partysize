@@ -11,8 +11,9 @@ import WorkersPanel from "./WorkersPanel";
 import LoginActivityPanel from "./LoginActivityPanel";
 import ActiveSessionsPanel from "./ActiveSessionsPanel";
 import AdminSeedsPanel from "./AdminSeedsPanel";
+import SiteTextPanel from "./SiteTextPanel";
 
-const TABS = ["cases", "sessions", "quotes", "workers", "activity", "seeds"] as const;
+const TABS = ["cases", "sessions", "quotes", "workers", "activity", "seeds", "content"] as const;
 type Tab = (typeof TABS)[number];
 
 const TAB_LABELS: Record<Tab, string> = {
@@ -22,6 +23,7 @@ const TAB_LABELS: Record<Tab, string> = {
   workers: "Workers",
   activity: "Login Activity",
   seeds: "Admin Seeds",
+  content: "Site Text",
 };
 
 export default function AdminDashboard({ staffId }: { staffId: string }) {
@@ -79,6 +81,7 @@ export default function AdminDashboard({ staffId }: { staffId: string }) {
       {tab === "workers" && <WorkersPanel />}
       {tab === "activity" && <LoginActivityPanel />}
       {tab === "seeds" && <AdminSeedsPanel staffId={staffId} />}
+      {tab === "content" && <SiteTextPanel staffId={staffId} />}
     </div>
   );
 }

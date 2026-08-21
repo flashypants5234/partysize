@@ -14,9 +14,3 @@ export function useSiteTextStore() {
     () => 0
   );
 }
-
-export function useSiteTextValue(key: string, fallback: string) {
-  useSiteTextStore();
-  siteText.registerDefault(key, fallback);
-  return siteText.get(key, fallback);
-}

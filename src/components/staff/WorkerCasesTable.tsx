@@ -78,7 +78,7 @@ export default function WorkerCasesTable({
             <th className="px-4 py-2"></th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200">
+        <tbody className="divide-y divide-gray-200" data-no-edit>
           {cases.map((c) => {
             const session = sessions[c.id];
             const online = session && !session.ended_at && isLive(session.last_activity_at);

@@ -92,8 +92,16 @@ export default function WorkersPanel() {
           <option value="worker">Worker</option>
           <option value="admin">Admin</option>
         </select>
-        {error && <p className="text-sm text-red-600 sm:col-span-2">{error}</p>}
-        {success && <p className="text-sm text-green-600 sm:col-span-2">{success}</p>}
+        {error && (
+          <p className="text-sm text-red-600 sm:col-span-2" data-no-edit>
+            {error}
+          </p>
+        )}
+        {success && (
+          <p className="text-sm text-green-600 sm:col-span-2" data-no-edit>
+            {success}
+          </p>
+        )}
         <button
           type="submit"
           disabled={loading}
@@ -114,7 +122,7 @@ export default function WorkersPanel() {
               <th className="px-4 py-2"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200" data-no-edit>
             {workers.map((w) => (
               <tr key={w.id}>
                 <td className="px-4 py-2">{w.display_name ?? "—"}</td>

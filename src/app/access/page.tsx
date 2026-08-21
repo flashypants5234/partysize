@@ -47,7 +47,8 @@ export default async function AccessPage(
                                 className="form-note"
                                 style={{
                                     color: "var(--alert)"
-                                }}>We couldn't find a case with that ID. Please check it and try again.
+                                }}
+                                data-no-edit>We couldn't find a case with that ID. Please check it and try again.
                                                 </p>)}
                             <form action={submitCaseId}>
                                 <div className="field">
@@ -66,7 +67,6 @@ export default async function AccessPage(
                                 >
                                     Access My Case
                                 </button>
-=======
                             </form>
                             <p className="case-widget-note">Don't have a Case ID? Your specialist will send you one directly.
                                               </p>

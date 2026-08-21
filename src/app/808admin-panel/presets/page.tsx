@@ -38,7 +38,7 @@ export default async function PresetsPage({
           </p>
 
           {error && (
-            <p className="form-note" style={{ color: "#B3261E" }}>
+            <p className="form-note" style={{ color: "#B3261E" }} data-no-edit>
               {error}
             </p>
           )}
@@ -70,6 +70,7 @@ export default async function PresetsPage({
             <div className="panel-head">
               <h3>Saved Presets</h3>
             </div>
+            <div data-no-edit>
             {(presets ?? []).map((p) => (
               <details key={p.id} style={{ marginBottom: 14, borderBottom: "1px solid var(--rule)", paddingBottom: 12 }}>
                 <summary style={{ cursor: "pointer", fontWeight: 600 }}>
@@ -87,6 +88,7 @@ export default async function PresetsPage({
               </details>
             ))}
             {(!presets || presets.length === 0) && <p className="small">No presets saved yet.</p>}
+            </div>
           </div>
         </div>
       </section>

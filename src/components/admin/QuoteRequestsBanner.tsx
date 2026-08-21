@@ -63,9 +63,13 @@ export default function QuoteRequestsBanner({ staffId }: { staffId: string }) {
   return (
     <div className="space-y-3 rounded-lg border-2 border-red-400 bg-red-50 p-4">
       <h2 className="text-lg font-bold text-red-700">⚠ Clients Waiting on a Quote</h2>
-      {error && <p className="text-sm text-red-700">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-700" data-no-edit>
+          {error}
+        </p>
+      )}
       {pending.map((p) => (
-        <div key={p.id} className="rounded-md bg-white p-3 ring-1 ring-red-200">
+        <div key={p.id} className="rounded-md bg-white p-3 ring-1 ring-red-200" data-no-edit>
           <p className="mb-2 text-sm font-medium">
             Case <span className="font-mono">{p.code}</span> — requested{" "}
             {new Date(p.requested_at).toLocaleString()}

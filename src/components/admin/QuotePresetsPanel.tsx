@@ -80,7 +80,11 @@ export default function QuotePresetsPanel() {
           rows={2}
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
         />
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && (
+          <p className="text-sm text-red-600" data-no-edit>
+            {error}
+          </p>
+        )}
         <button
           type="submit"
           className="rounded-md bg-blue-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-700"
@@ -89,7 +93,7 @@ export default function QuotePresetsPanel() {
         </button>
       </form>
 
-      <div className="space-y-2">
+      <div className="space-y-2" data-no-edit>
         {presets.map((p) => (
           <div key={p.id} className="rounded-md border border-gray-200 p-3">
             <div className="flex items-center justify-between">

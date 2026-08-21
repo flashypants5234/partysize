@@ -1,0 +1,128 @@
+/* Styles for the admin-only global live text editor. Scoped to a class so it
+   never leaks into the site's own `as-skin` / `case-portal` visual skins. */
+
+.dyad-editable {
+  outline: 1px dashed #ec4899;
+  outline-offset: 2px;
+  cursor: text;
+  border-radius: 2px;
+}
+
+.dyad-editable-attr {
+  outline: 1px dotted #f59e0b;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.dyad-editing {
+  outline: 2px solid #2563eb !important;
+  outline-offset: 2px;
+  background-color: rgba(37, 99, 235, 0.06);
+  cursor: text;
+}
+
+.dyad-editor-shield {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+}
+
+.dyad-editor-toolbar {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 9999;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100vw - 24px);
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #111827;
+  color: #f9fafb;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.dyad-editor-toolbar button {
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #374151;
+  color: #f9fafb;
+  border: none;
+  cursor: pointer;
+}
+
+.dyad-editor-toolbar button:hover:not(:disabled) {
+  background: #4b5563;
+}
+
+.dyad-editor-toolbar button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.dyad-editor-toolbar button:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.dyad-editor-toolbar .dyad-badge {
+  font-size: 11px;
+  color: #d1d5db;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+.dyad-editor-key-badge {
+  position: fixed;
+  transform: translateY(-100%);
+  background: #111827;
+  color: #fbbf24;
+  font-size: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  padding: 1px 4px;
+  border-radius: 3px;
+  z-index: 9999;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.dyad-attr-popover {
+  position: fixed;
+  z-index: 9999;
+  background: #111827;
+  color: #f9fafb;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.dyad-attr-popover input {
+  border-radius: 6px;
+  border: 1px solid #4b5563;
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 5px 8px;
+  font-size: 12px;
+  min-width: 220px;
+}
+
+.dyad-attr-popover button {
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}

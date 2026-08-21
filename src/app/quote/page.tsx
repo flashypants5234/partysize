@@ -52,7 +52,7 @@ export default async function QuotePage() {
           <div className="eyebrow">Your Quote</div>
           <h1>{isIssued ? "Your Custom Quote" : "Preparing Your Quote"}</h1>
 
-          <div className="quote-box">
+          <div className="quote-box" data-no-edit>
             {isIssued ? (
               <>
                 <div
@@ -79,7 +79,7 @@ export default async function QuotePage() {
             <section style={{ marginTop: 36 }}>
               <div className="eyebrow">Your Protection Review</div>
               <h2 style={{ marginTop: 4 }}>{category.label}</h2>
-              <div className="review-list">
+              <div className="review-list" data-no-edit>
                 {category.questions.map((q) => (
                   <div key={q.key} className="review-row">
                     <span className="review-q">{q.label}</span>
@@ -92,7 +92,7 @@ export default async function QuotePage() {
 
           <section style={{ marginTop: 36 }}>
             <div className="eyebrow">Case Details</div>
-            <div className="case-found" style={{ marginTop: 12 }}>
+            <div className="case-found" style={{ marginTop: 12 }} data-no-edit>
               <div className="info-grid">
                 <div className="info-field">
                   <label>Assigned Specialist</label>

@@ -28,7 +28,7 @@ export default function LoginActivityPanel() {
             <th className="px-4 py-2">When</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200">
+        <tbody className="divide-y divide-gray-200" data-no-edit>
           {rows.map((r) => (
             <tr key={r.id}>
               <td className="px-4 py-2">{r.attempted_identifier ?? "—"}</td>

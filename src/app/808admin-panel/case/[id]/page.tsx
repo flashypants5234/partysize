@@ -112,12 +112,12 @@ export default async function AdminCaseDetailPage({
           <h1 style={{ marginTop: 12 }}>Case {caseRow.code}</h1>
 
           {error && (
-            <p className="form-note" style={{ color: "#B3261E" }}>
+            <p className="form-note" style={{ color: "#B3261E" }} data-no-edit>
               {error}
             </p>
           )}
 
-          <div className="panel">
+          <div className="panel" data-no-edit>
             <div className="case-found-badge">✓ Case located successfully</div>
             <div className="info-grid">
               <div className="info-field">
@@ -195,6 +195,7 @@ export default async function AdminCaseDetailPage({
             <div className="panel-head">
               <h3>Client Selections</h3>
             </div>
+            <div data-no-edit>
             {category ? (
               <>
                 <p>
@@ -235,9 +236,10 @@ export default async function AdminCaseDetailPage({
                 </tbody>
               </table>
             )}
+            </div>
           </div>
 
-          <div className="panel" style={{ border: "2px solid var(--brass)" }}>
+          <div className="panel" data-no-edit style={{ border: "2px solid var(--brass)" }}>
             <div className="panel-head">
               <h3>Confidential Quote</h3>
               {quote?.requested_at && !quote.issued_at && (
@@ -249,10 +251,14 @@ export default async function AdminCaseDetailPage({
               Only admin and the client can see this. Workers never have access to quote pricing.
             </p>
             {quote?.requested_at && (
-              <p className="small">Requested: {new Date(quote.requested_at).toLocaleString()}</p>
+              <p className="small" data-no-edit>
+                Requested: {new Date(quote.requested_at).toLocaleString()}
+              </p>
             )}
             {quote?.issued_at && (
-              <p className="small">Last issued: {new Date(quote.issued_at).toLocaleString()}</p>
+              <p className="small" data-no-edit>
+                Last issued: {new Date(quote.issued_at).toLocaleString()}
+              </p>
             )}
             <QuoteComposer
               caseId={caseRow.id}
@@ -266,6 +272,7 @@ export default async function AdminCaseDetailPage({
             <div className="panel-head">
               <h3>Worker Notes</h3>
             </div>
+            <div data-no-edit>
             {((notes as NoteRow[] | null) ?? []).map((n) => {
               const author = Array.isArray(n.staff_profiles) ? n.staff_profiles[0] : n.staff_profiles;
               return (
@@ -278,6 +285,7 @@ export default async function AdminCaseDetailPage({
               );
             })}
             {(!notes || notes.length === 0) && <p className="small">No notes yet.</p>}
+            </div>
 
             <form action={addWorkerNote} style={{ marginTop: 14 }}>
               <input type="hidden" name="caseId" value={caseRow.id} />

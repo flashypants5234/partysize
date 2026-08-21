@@ -70,13 +70,13 @@ export default function CaseQuotePanel({
       </h3>
 
       {quote?.requested_at && !quote.issued_at && (
-        <p className="rounded bg-red-100 px-3 py-2 text-sm font-medium text-red-700">
+        <p className="rounded bg-red-100 px-3 py-2 text-sm font-medium text-red-700" data-no-edit>
           ⚠ Client requested a quote on {new Date(quote.requested_at).toLocaleString()}
         </p>
       )}
 
       {quote?.issued_at && (
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600" data-no-edit>
           Issued {new Date(quote.issued_at).toLocaleString()} —{" "}
           <button
             onClick={() => setRevealed((r) => !r)}
@@ -114,7 +114,11 @@ export default function CaseQuotePanel({
         className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
       />
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-600" data-no-edit>
+          {error}
+        </p>
+      )}
 
       <button
         onClick={handleIssue}

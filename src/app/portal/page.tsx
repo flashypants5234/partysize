@@ -45,7 +45,7 @@ export default async function PortalPage() {
 
       <main className="case-shell">
         <div className="container" style={{ maxWidth: 720 }}>
-          <div className="case-found">
+          <div className="case-found" data-no-edit>
             <div className="case-found-badge">✓ Case located successfully</div>
             <div className="info-grid">
               <div className="info-field">

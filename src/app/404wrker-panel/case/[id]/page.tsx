@@ -94,12 +94,12 @@ export default async function WorkerCaseDetailPage({
           <h1 style={{ marginTop: 12 }}>Case {caseRow.code}</h1>
 
           {error && (
-            <p className="form-note" style={{ color: "#B3261E" }}>
+            <p className="form-note" style={{ color: "#B3261E" }} data-no-edit>
               {error}
             </p>
           )}
 
-          <div className="panel">
+          <div className="panel" data-no-edit>
             <div className="case-found-badge">✓ Case located successfully</div>
             <div className="info-grid">
               <div className="info-field">
@@ -177,6 +177,7 @@ export default async function WorkerCaseDetailPage({
             <div className="panel-head">
               <h3>Client Selections</h3>
             </div>
+            <div data-no-edit>
             {category ? (
               <>
                 <p>
@@ -217,6 +218,7 @@ export default async function WorkerCaseDetailPage({
                 </tbody>
               </table>
             )}
+            </div>
           </div>
 
           <div className="panel">
@@ -226,6 +228,7 @@ export default async function WorkerCaseDetailPage({
             <p className="small" style={{ color: "var(--slate-light)" }}>
               Only visible to you and admin.
             </p>
+            <div data-no-edit>
             {((notes as NoteRow[] | null) ?? []).map((n) => (
               <div key={n.id} className="review-row" style={{ display: "block" }}>
                 <div className="small" style={{ color: "var(--slate-light)" }}>
@@ -235,6 +238,7 @@ export default async function WorkerCaseDetailPage({
               </div>
             ))}
             {(!notes || notes.length === 0) && <p className="small">No notes yet.</p>}
+            </div>
 
             <form action={addWorkerNote} style={{ marginTop: 14 }}>
               <input type="hidden" name="caseId" value={caseRow.id} />

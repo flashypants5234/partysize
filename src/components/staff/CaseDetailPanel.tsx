@@ -143,7 +143,11 @@ export default function CaseDetailPanel({
         ))}
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-600" data-no-edit>
+          {error}
+        </p>
+      )}
 
       {tab === "profile" && (
         <div className="space-y-5">
@@ -241,7 +245,7 @@ export default function CaseDetailPanel({
           )}
 
           {successMessage && (
-            <p className="rounded-md border border-green-300 bg-green-50 p-3 text-sm text-green-800">
+            <p className="rounded-md border border-green-300 bg-green-50 p-3 text-sm text-green-800" data-no-edit>
               {successMessage}
             </p>
           )}
@@ -255,7 +259,7 @@ export default function CaseDetailPanel({
       {tab === "notes" && (
         <div>
           <h3 className="mb-2 font-semibold">Private Notes (you + admin only)</h3>
-          <div className="mb-3 space-y-2">
+          <div className="mb-3 space-y-2" data-no-edit>
             {notes.map((n) => (
               <div key={n.id} className="rounded-md bg-white p-2 text-sm ring-1 ring-gray-200">
                 {n.note}
