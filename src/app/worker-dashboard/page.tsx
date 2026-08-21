@@ -5,15 +5,15 @@ import { useEffect } from "react";
 import { useStaffSession } from "@/hooks/useStaffSession";
 import StaffLoginForm from "@/components/staff/StaffLoginForm";
 import NotAuthorized from "@/components/staff/NotAuthorized";
-import AdminDashboard from "@/components/admin/AdminDashboard";
+import WorkerDashboard from "@/components/worker/WorkerDashboard";
 
-export default function AdminPanelPage() {
+export default function WorkerDashboardPage() {
   const { session, role, staffId, loading } = useStaffSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && role === "worker") {
-      router.replace("/worker-dashboard");
+    if (!loading && role === "admin") {
+      router.replace("/808admin-panel");
     }
   }, [loading, role, router]);
 
@@ -25,13 +25,13 @@ export default function AdminPanelPage() {
     return <StaffLoginForm />;
   }
 
-  if (role === "worker") {
-    return null;
-  }
-
-  if (role !== "admin") {
+  if (role !== "worker" && role !== "admin") {
     return <NotAuthorized />;
   }
 
-  return <AdminDashboard staffId={staffId!} />;
+  if (role === "admin") {
+    return null;
+  }
+
+  return <WorkerDashboard staffId={staffId!} />;
 }

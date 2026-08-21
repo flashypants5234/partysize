@@ -1,39 +1,50 @@
-import { unwrap, type LoginActivityRow } from "./admin-types";
+"use client";
 
-export default function LoginActivityPanel({ loginActivity }: { loginActivity: LoginActivityRow[] }) {
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import type { LoginActivityRow } from "@/types/staff";
+
+export default function LoginActivityPanel() {
+  const [rows, setRows] = useState<LoginActivityRow[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("staff_login_activity")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(100)
+      .then(({ data }) => setRows((data as LoginActivityRow[]) ?? []));
+  }, []);
+
   return (
-    <div className="panel" style={{ marginTop: 24 }}>
-      <h2>Recent Login Activity</h2>
-      <table className="table">
-        <thead>
+    <div className="overflow-x-auto rounded-lg border border-gray-200">
+      <table className="min-w-full divide-y divide-gray-200 text-sm">
+        <thead className="bg-gray-100 text-left">
           <tr>
-            <th>Who</th>
-            <th>IP</th>
-            <th>Result</th>
-            <th>When</th>
+            <th className="px-4 py-2">Identifier</th>
+            <th className="px-4 py-2">Success</th>
+            <th className="px-4 py-2">IP</th>
+            <th className="px-4 py-2">User Agent</th>
+            <th className="px-4 py-2">When</th>
           </tr>
         </thead>
-        <tbody>
-          {loginActivity.map((l) => {
-            const staff = unwrap(l.staff_profiles);
-            return (
-              <tr key={l.id}>
-                <td>{staff?.display_name ?? l.attempted_identifier ?? "—"}</td>
-                <td className="mono small">{l.ip_address ?? "—"}</td>
-                <td>
-                  {l.success ? (
-                    <span className="badge badge-active">Success</span>
-                  ) : (
-                    <span className="badge badge-denied">Failed</span>
-                  )}
-                </td>
-                <td>{new Date(l.created_at).toLocaleString()}</td>
-              </tr>
-            );
-          })}
-          {loginActivity.length === 0 && (
+        <tbody className="divide-y divide-gray-200">
+          {rows.map((r) => (
+            <tr key={r.id}>
+              <td className="px-4 py-2">{r.attempted_identifier ?? "—"}</td>
+              <td className={`px-4 py-2 ${r.success ? "text-green-600" : "text-red-600"}`}>
+                {r.success ? "Success" : "Failed"}
+              </td>
+              <td className="px-4 py-2 font-mono">{r.ip_address ?? "—"}</td>
+              <td className="max-w-xs truncate px-4 py-2">{r.user_agent ?? "—"}</td>
+              <td className="px-4 py-2">{new Date(r.created_at).toLocaleString()}</td>
+            </tr>
+          ))}
+          {rows.length === 0 && (
             <tr>
-              <td colSpan={4}>No login activity yet.</td>
+              <td colSpan={5} className="px-4 py-6 text-center text-gray-500">
+                No login activity recorded yet.
+              </td>
             </tr>
           )}
         </tbody>
