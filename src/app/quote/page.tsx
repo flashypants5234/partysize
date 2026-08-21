@@ -1,47 +1,66 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getCaseSession } from "@/lib/case-session";
-import { getCategory } from "@/data/coverage-categories";
-import { estimateQuote } from "@/lib/quote";
+import { cookies } from "next/headers";
+import { getCaseSession, CASE_SESSION_COOKIE } from "@/lib/case-session";
+import { supabase } from "@/integrations/supabase/client";
+
+type QuoteRow = { quote_text: string | null; requested_at: string | null; issued_at: string | null };
 
 export default async function QuotePage() {
   const session = await getCaseSession();
-
   if (!session) {
     redirect("/access");
   }
 
-  const categoryKey = session.responses?.category ?? session.selected_category;
-  const category = categoryKey ? getCategory(categoryKey) : undefined;
-  const answers = session.responses?.answers ?? {};
+  const cookieStore = await cookies();
+  const token = cookieStore.get(CASE_SESSION_COOKIE)?.value;
 
-  if (!category) {
-    redirect("/portal");
+  let quoteText: string | null = null;
+  let issuedAt: string | null = null;
+
+  if (token) {
+    const { data } = await supabase.rpc("get_case_quote", { p_token: token });
+    const rows = (data ?? []) as QuoteRow[];
+    if (rows.length > 0) {
+      quoteText = rows[0].quote_text;
+      issuedAt = rows[0].issued_at;
+    }
   }
 
-  const { low, high } = estimateQuote(category.key, answers);
+  const isIssued = Boolean(issuedAt && quoteText);
 
   return (
     <div className="as-skin">
       <main className="case-shell">
         <div className="container" style={{ maxWidth: 560 }}>
-          <div className="eyebrow">Your Estimate</div>
-          <h1>{category.label} Coverage</h1>
+          <div className="eyebrow">Your Quote</div>
+          <h1>{isIssued ? "Your Custom Quote" : "Preparing Your Quote"}</h1>
 
           <div className="quote-box">
-            <div className="quote-amount">
-              ${low}–${high}
-              <span className="quote-period">/mo</span>
-            </div>
-            <p className="small" style={{ color: "var(--slate-light)" }}>
-              Illustrative placeholder estimate only — not a final rate. Your specialist,{" "}
-              {session.specialist_name ?? "your assigned specialist"}, will confirm exact pricing and
-              coverage limits.
-            </p>
+            {isIssued ? (
+              <>
+                <div
+                  className="quote-amount"
+                  style={{ fontSize: "1.3rem", whiteSpace: "pre-wrap", textAlign: "left" }}
+                >
+                  {quoteText}
+                </div>
+                <p className="small" style={{ color: "var(--slate-light)", marginTop: 12 }}>
+                  Issued {new Date(issuedAt as string).toLocaleString()}. This quote is confidential and
+                  prepared specifically for you.
+                </p>
+              </>
+            ) : (
+              <p className="small" style={{ color: "var(--slate-light)" }}>
+                Your specialist{session.specialist_name ? `, ${session.specialist_name},` : ""} has been
+                notified and is preparing your custom quote. Check back shortly, or we&apos;ll follow up
+                directly.
+              </p>
+            )}
           </div>
 
           <Link href="/portal" className="btn btn-outline btn-block" style={{ marginTop: 24 }}>
-            Explore Another Category
+            Back to Portal
           </Link>
         </div>
       </main>

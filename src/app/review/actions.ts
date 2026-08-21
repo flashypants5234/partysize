@@ -13,7 +13,8 @@ export async function confirmReview() {
     redirect("/access");
   }
 
-  await supabase.rpc("update_case_step", { p_token: token, p_step: "quote_issued" });
+  await supabase.rpc("update_case_step", { p_token: token, p_step: "quote_requested" });
+  await supabase.rpc("request_quote", { p_token: token });
 
   redirect("/quote");
 }

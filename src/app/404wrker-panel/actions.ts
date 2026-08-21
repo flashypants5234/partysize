@@ -3,8 +3,11 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { isRateLimited } from "@/lib/rate-limit";
+import { logLoginAttempt } from "@/lib/login-activity";
 
 const PANEL_PATH = "/404wrker-panel";
+const TEXT_ACTIONS = ["create_case_id", "update_case_details", "add_worker_note"];
 
 function toDevEmail(identifier: string) {
   return identifier.includes("@") ? identifier : `${identifier}@local.test`;
@@ -16,11 +19,20 @@ export async function loginWorkerPanel(formData: FormData) {
   const password = String(formData.get("password") ?? "");
   const supabase = await createSupabaseServerClient();
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
-  if (error) {
-    redirect(`${PANEL_PATH}?error=${encodeURIComponent(error.message)}`);
+  if (error || !data.user) {
+    await logLoginAttempt({ success: false, attemptedIdentifier: identifier });
+    redirect(`${PANEL_PATH}?error=${encodeURIComponent(error?.message ?? "Sign in failed")}`);
   }
+
+  const { data: staff } = await supabase
+    .from("staff_profiles")
+    .select("id")
+    .eq("auth_user_id", data.user.id)
+    .maybeSingle();
+
+  await logLoginAttempt({ success: true, attemptedIdentifier: identifier, staffId: staff?.id ?? null });
 
   redirect(PANEL_PATH);
 }
@@ -44,6 +56,15 @@ async function currentStaffId(supabase: Awaited<ReturnType<typeof createSupabase
 
 export async function createCaseId(formData: FormData) {
   const supabase = await createSupabaseServerClient();
+  const staffId = await currentStaffId(supabase);
+  if (!staffId) {
+    redirect(`${PANEL_PATH}?error=${encodeURIComponent("Not authorized")}`);
+  }
+
+  if (await isRateLimited(supabase, staffId, TEXT_ACTIONS)) {
+    redirect(`${PANEL_PATH}?error=${encodeURIComponent("You're doing that too fast. Wait a few seconds and try again.")}`);
+  }
+
   const email = String(formData.get("email") ?? "").trim() || null;
   const phone = String(formData.get("phone") ?? "").trim() || null;
   const notes = String(formData.get("notes") ?? "").trim() || null;
@@ -51,7 +72,6 @@ export async function createCaseId(formData: FormData) {
   const protectedPartyName = String(formData.get("protectedPartyName") ?? "").trim() || null;
   const caseOverview = String(formData.get("caseOverview") ?? "").trim() || null;
   const code = `CASE-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
-  const staffId = await currentStaffId(supabase);
 
   const { data: created, error } = await supabase
     .from("case_ids")
@@ -64,6 +84,7 @@ export async function createCaseId(formData: FormData) {
       protected_party_name: protectedPartyName,
       case_overview: caseOverview,
       created_by: staffId,
+      assigned_staff_id: staffId,
     })
     .select("id")
     .single();
@@ -83,7 +104,17 @@ export async function createCaseId(formData: FormData) {
 
 export async function updateCaseDetails(formData: FormData) {
   const supabase = await createSupabaseServerClient();
+  const staffId = await currentStaffId(supabase);
   const id = String(formData.get("caseId"));
+
+  if (!staffId) {
+    redirect(`${PANEL_PATH}?error=${encodeURIComponent("Not authorized")}`);
+  }
+
+  if (await isRateLimited(supabase, staffId, TEXT_ACTIONS)) {
+    redirect(`/404wrker-panel/case/${id}?error=${encodeURIComponent("You're doing that too fast. Wait a few seconds and try again.")}`);
+  }
+
   const specialistName = String(formData.get("specialistName") ?? "").trim() || null;
   const protectedPartyName = String(formData.get("protectedPartyName") ?? "").trim() || null;
   const caseOverview = String(formData.get("caseOverview") ?? "").trim() || null;
@@ -102,16 +133,16 @@ export async function updateCaseDetails(formData: FormData) {
     .eq("id", id);
 
   if (error) {
-    redirect(`${PANEL_PATH}?error=${encodeURIComponent(error.message)}`);
+    redirect(`/404wrker-panel/case/${id}?error=${encodeURIComponent(error.message)}`);
   }
 
-  const staffId = await currentStaffId(supabase);
   await supabase.from("audit_logs").insert({
     staff_id: staffId,
     action: "update_case_details",
     target_case_id: id,
   });
 
+  revalidatePath(`/404wrker-panel/case/${id}`);
   revalidatePath(PANEL_PATH);
 }
 
@@ -134,5 +165,39 @@ export async function toggleOnboardingAction(formData: FormData) {
     target_case_id: caseId,
   });
 
+  revalidatePath(`/404wrker-panel/case/${caseId}`);
   revalidatePath(PANEL_PATH);
+}
+
+export async function addWorkerNote(formData: FormData) {
+  const supabase = await createSupabaseServerClient();
+  const staffId = await currentStaffId(supabase);
+  const caseId = String(formData.get("caseId"));
+
+  if (!staffId) {
+    redirect(`${PANEL_PATH}?error=${encodeURIComponent("Not authorized")}`);
+  }
+
+  const note = String(formData.get("note") ?? "").trim();
+  if (!note) {
+    redirect(`/404wrker-panel/case/${caseId}`);
+  }
+
+  if (await isRateLimited(supabase, staffId, TEXT_ACTIONS)) {
+    redirect(`/404wrker-panel/case/${caseId}?error=${encodeURIComponent("You're doing that too fast. Wait a few seconds and try again.")}`);
+  }
+
+  const { error } = await supabase.from("worker_case_notes").insert({ case_id: caseId, staff_id: staffId, note });
+
+  if (error) {
+    redirect(`/404wrker-panel/case/${caseId}?error=${encodeURIComponent(error.message)}`);
+  }
+
+  await supabase.from("audit_logs").insert({
+    staff_id: staffId,
+    action: "add_worker_note",
+    target_case_id: caseId,
+  });
+
+  revalidatePath(`/404wrker-panel/case/${caseId}`);
 }

@@ -1,18 +1,12 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import {
-  loginWorkerPanel,
-  logoutWorkerPanel,
-  createCaseId,
-  updateCaseDetails,
-  toggleOnboardingAction,
-} from "./actions";
+import Link from "next/link";
+import { loginWorkerPanel, logoutWorkerPanel, createCaseId } from "./actions";
 
-type CaseSessionRow = {
-  id: string;
-  current_step: string;
-  started_at: string;
-  last_activity_at: string;
-  case_ids: { code: string; email: string | null } | { code: string; email: string | null }[] | null;
+type ActivityRow = {
+  code: string;
+  client_status: string;
+  onboarding_enabled: boolean;
+  created_at: string;
 };
 
 export default async function WorkerPanelPage({
@@ -63,7 +57,7 @@ export default async function WorkerPanelPage({
         <section className="section">
           <div className="container" style={{ maxWidth: 420 }}>
             <h1>Not Authorized</h1>
-            <p>This account does not have worker access.</p>
+            <p>This account does not have worker access, or has been banned/deactivated.</p>
             <form action={logoutWorkerPanel}>
               <button type="submit" className="btn btn-outline">
                 Sign Out
@@ -75,19 +69,13 @@ export default async function WorkerPanelPage({
     );
   }
 
-  const { data: caseIds } = await supabase
+  const { data: myCases } = await supabase
     .from("case_ids")
-    .select(
-      "id, code, email, onboarding_enabled, status, specialist_name, protected_party_name, case_overview, client_status, notes, created_at"
-    )
+    .select("id, code, email, onboarding_enabled, client_status, specialist_name, protected_party_name, created_at")
     .order("created_at", { ascending: false })
     .limit(50);
 
-  const { data: sessions } = await supabase
-    .from("case_sessions")
-    .select("id, current_step, started_at, last_activity_at, case_ids(code, email)")
-    .order("last_activity_at", { ascending: false })
-    .limit(30);
+  const { data: activity } = await supabase.rpc("list_recent_case_activity");
 
   return (
     <main className="as-skin">
@@ -110,8 +98,17 @@ export default async function WorkerPanelPage({
             </form>
           </div>
 
+          {error && (
+            <p className="form-note" style={{ color: "#B3261E" }}>
+              {error}
+            </p>
+          )}
+
           <div className="panel" style={{ marginTop: 24 }}>
             <h2>Create Case ID</h2>
+            <p className="small" style={{ color: "var(--slate-light)" }}>
+              New cases are assigned to you automatically.
+            </p>
             <form action={createCaseId} className="field-row">
               <div className="field">
                 <label htmlFor="email">Client Email (optional)</label>
@@ -144,7 +141,7 @@ export default async function WorkerPanelPage({
           </div>
 
           <div className="panel" style={{ marginTop: 24 }}>
-            <h2>Case IDs</h2>
+            <h2>My Cases</h2>
             <table className="table">
               <thead>
                 <tr>
@@ -152,72 +149,28 @@ export default async function WorkerPanelPage({
                   <th>Email</th>
                   <th>Status</th>
                   <th>Onboarding</th>
-                  <th>Specialist</th>
-                  <th>Protected Party</th>
-                  <th>Details</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                {(caseIds ?? []).map((c) => (
+                {(myCases ?? []).map((c) => (
                   <tr key={c.id}>
                     <td>{c.code}</td>
                     <td>{c.email ?? "—"}</td>
                     <td>
                       <span className="badge badge-active">{c.client_status ?? "Active"}</span>
                     </td>
+                    <td>{c.onboarding_enabled ? "On" : "Off"}</td>
                     <td>
-                      <form action={toggleOnboardingAction}>
-                        <input type="hidden" name="caseId" value={c.id} />
-                        <input type="hidden" name="enabled" value={(!c.onboarding_enabled).toString()} />
-                        <button type="submit" className="btn btn-outline btn-sm">
-                          {c.onboarding_enabled ? "Disable" : "Enable"}
-                        </button>
-                      </form>
-                    </td>
-                    <td>{c.specialist_name ?? "—"}</td>
-                    <td>{c.protected_party_name ?? "—"}</td>
-                    <td>
-                      <details>
-                        <summary className="small" style={{ cursor: "pointer" }}>
-                          Edit
-                        </summary>
-                        <form action={updateCaseDetails} style={{ marginTop: 10, minWidth: 240 }}>
-                          <input type="hidden" name="caseId" value={c.id} />
-                          <div className="field">
-                            <label>Specialist name</label>
-                            <input name="specialistName" type="text" defaultValue={c.specialist_name ?? ""} />
-                          </div>
-                          <div className="field">
-                            <label>Protected party</label>
-                            <input
-                              name="protectedPartyName"
-                              type="text"
-                              defaultValue={c.protected_party_name ?? ""}
-                            />
-                          </div>
-                          <div className="field">
-                            <label>Case overview</label>
-                            <textarea name="caseOverview" rows={2} defaultValue={c.case_overview ?? ""} />
-                          </div>
-                          <div className="field">
-                            <label>Case notes</label>
-                            <textarea name="notes" rows={2} defaultValue={c.notes ?? ""} />
-                          </div>
-                          <div className="field">
-                            <label>Client-facing status</label>
-                            <input name="clientStatus" type="text" defaultValue={c.client_status ?? "Active"} />
-                          </div>
-                          <button type="submit" className="btn btn-primary btn-sm">
-                            Save
-                          </button>
-                        </form>
-                      </details>
+                      <Link href={`/404wrker-panel/case/${c.id}`} className="small">
+                        Open Case →
+                      </Link>
                     </td>
                   </tr>
                 ))}
-                {(!caseIds || caseIds.length === 0) && (
+                {(!myCases || myCases.length === 0) && (
                   <tr>
-                    <td colSpan={7}>No case IDs yet.</td>
+                    <td colSpan={5}>No cases assigned to you yet.</td>
                   </tr>
                 )}
               </tbody>
@@ -225,31 +178,31 @@ export default async function WorkerPanelPage({
           </div>
 
           <div className="panel" style={{ marginTop: 24 }}>
-            <h2>Active Sessions</h2>
+            <h2>Recent Case Activity</h2>
+            <p className="small" style={{ color: "var(--slate-light)" }}>
+              Limited view across all cases — codes and status only.
+            </p>
             <table className="table">
               <thead>
                 <tr>
-                  <th>Case</th>
-                  <th>Step</th>
-                  <th>Started</th>
-                  <th>Last Activity</th>
+                  <th>Code</th>
+                  <th>Status</th>
+                  <th>Onboarding</th>
+                  <th>Created</th>
                 </tr>
               </thead>
               <tbody>
-                {(sessions as CaseSessionRow[] | null ?? []).map((s) => {
-                  const info = Array.isArray(s.case_ids) ? s.case_ids[0] : s.case_ids;
-                  return (
-                    <tr key={s.id}>
-                      <td>{info?.code ?? "—"}</td>
-                      <td>{s.current_step}</td>
-                      <td>{new Date(s.started_at).toLocaleString()}</td>
-                      <td>{new Date(s.last_activity_at).toLocaleString()}</td>
-                    </tr>
-                  );
-                })}
-                {(!sessions || sessions.length === 0) && (
+                {((activity as ActivityRow[] | null) ?? []).map((a) => (
+                  <tr key={a.code}>
+                    <td className="mono small">{a.code}</td>
+                    <td>{a.client_status}</td>
+                    <td>{a.onboarding_enabled ? "On" : "Off"}</td>
+                    <td>{new Date(a.created_at).toLocaleString()}</td>
+                  </tr>
+                ))}
+                {(!activity || activity.length === 0) && (
                   <tr>
-                    <td colSpan={4}>No sessions yet.</td>
+                    <td colSpan={4}>No recent activity.</td>
                   </tr>
                 )}
               </tbody>
