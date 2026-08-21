@@ -106,6 +106,10 @@
 .as-skin .btn-continue { color: #fff; }
 .as-skin .btn-continue .btn-arrow { width: 15px; height: 15px; flex-shrink: 0; transition: transform 0.15s ease; }
 .as-skin .btn-continue:hover .btn-arrow { transform: translateX(3px); }
+/* Visual-only variant: white label + minimal right arrow (homepage continue button) */
+.as-skin .btn-continue { color: #fff; }
+.as-skin .btn-continue .btn-arrow { width: 15px; height: 15px; flex-shrink: 0; transition: transform 0.15s ease; }
+.as-skin .btn-continue:hover .btn-arrow { transform: translateX(3px); }
 .as-skin .btn-outline { background: transparent; border-color: var(--rule-dark); color: var(--navy-950); }
 .as-skin .btn-outline:hover { border-color: var(--navy-950); }
 .as-skin .btn-outline-light { background: transparent; border-color: rgba(255,255,255,0.35); color: #fff; }
